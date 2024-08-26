@@ -3065,63 +3065,6 @@ frontend_code = declare_dependency(
 
 subdir('src')
 
-generated_sources_ac += {'': ['GNUmakefile']}
-
-
-# If there are any files in the source directory that we also generate in the
-# build directory, they might get preferred over the newly generated files,
-# e.g. because of a #include "file", which always will search in the current
-# directory first.
-message('checking for file conflicts between source and build directory')
-conflicting_files = []
-potentially_conflicting_files_t = []
-potentially_conflicting_files_t += generated_headers
-potentially_conflicting_files_t += generated_sources
-
-potentially_conflicting_files = []
-
-# convert all sources of potentially conflicting files into uniform shape
-foreach t : potentially_conflicting_files_t
-  potentially_conflicting_files += t.full_path()
-endforeach
-foreach t1 : configure_files
-  if meson.version().version_compare('>=0.59')
-    t = fs.parent(t1) / fs.name(t1)
-  else
-    t = '@0@'.format(t1)
-  endif
-  potentially_conflicting_files += meson.current_build_dir() / t
-endforeach
-foreach sub, fnames : generated_sources_ac
-  sub = meson.build_root() / sub
-  foreach fname : fnames
-    potentially_conflicting_files += sub / fname
-  endforeach
-endforeach
-
-# find and report conflicting files
-foreach build_path : potentially_conflicting_files
-  build_path = host_system == 'windows' ? fs.as_posix(build_path) : build_path
-  # str.replace is in 0.56
-  src_path = meson.current_source_dir() / build_path.split(meson.current_build_dir() / '')[1]
-  if fs.exists(src_path) or fs.is_symlink(src_path)
-    conflicting_files += src_path
-  endif
-endforeach
-# XXX: Perhaps we should generate a file that would clean these up? The list
-# can be long.
-if conflicting_files.length() > 0
-  errmsg_cleanup = '''
-Conflicting files in source directory:
-  @0@
-
-The conflicting files need to be removed, either by removing the files listed
-above, or by running configure and then make maintainer-clean.
-'''
-  errmsg_cleanup = errmsg_cleanup.format(' '.join(conflicting_files))
-  error(errmsg_nonclean_base.format(errmsg_cleanup))
-endif
-
 
 
 ###############################################################
@@ -3320,8 +3263,6 @@ if meson.version().version_compare('>=0.57')
     {
       'bonjour': bonjour,
       'bsd_auth': bsd_auth,
-      'docs': docs_dep,
-      'docs_pdf': docs_pdf_dep,
       'gss': gssapi,
       'icu': icu,
       'ldap': ldap,
@@ -3332,9 +3273,6 @@ if meson.version().version_compare('>=0.57')
       'nls': libintl,
       'openssl': ssl,
       'pam': pam,
-      'plperl': perl_dep,
-      'plpython': python3_dep,
-      'pltcl': tcl_dep,
       'readline': readline,
       'selinux': selinux,
       'systemd': systemd,
