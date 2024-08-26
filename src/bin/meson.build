@@ -2,4 +2,3 @@
 
 
 subdir('pg_config')
-subdir('scripts')

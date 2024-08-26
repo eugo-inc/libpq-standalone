@@ -28,14 +28,3 @@ pg_bsd_indent = executable('pg_bsd_indent',
   },
 )
 bin_targets += pg_bsd_indent
-
-tests += {
-  'name': 'pg_bsd_indent',
-  'sd': meson.current_source_dir(),
-  'bd': meson.current_build_dir(),
-  'tap': {
-    'tests': [
-      't/001_pg_bsd_indent.pl',
-    ],
-  },
-}

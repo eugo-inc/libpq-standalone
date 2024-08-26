@@ -2805,18 +2805,8 @@ add_project_link_arguments(ldflags, language: ['c', 'cpp'])
 # tree. Later steps then can use those.
 
 # list of targets for various alias targets
-backend_targets = []
 bin_targets = []
-pl_targets = []
-contrib_targets = []
-testprep_targets = []
 nls_targets = []
-
-
-# Define the tests to distribute them to the correct test styles later
-test_deps = []
-tests = []
-
 
 # Default options for targets
 
@@ -3161,13 +3151,9 @@ endif
 
 
 all_built = [
-  backend_targets,
   bin_targets,
   libpq_st,
-  pl_targets,
-  contrib_targets,
   nls_mo_targets,
-  testprep_targets,
   ecpg_targets,
 ]
 
@@ -3180,38 +3166,13 @@ install_quiet = custom_target('install-quiet',
   depends: all_built,
 )
 
-# Target to install files used for tests, which aren't installed by default
-#install_test_files_args = [
-#  install_files,
-#  '--prefix', dir_prefix,
-#  '--install', contrib_data_dir, test_install_data,
-#  '--install', dir_lib_pkg, test_install_libs,
-#]
-#run_target('install-test-files',
-#  command: [python] + install_test_files_args,
-#  depends: testprep_targets,
-#)
-
 
 
 ###############################################################
 # Pseudo targets
 ###############################################################
 
-#alias_target('backend', backend_targets)
 alias_target('bin', bin_targets + [libpq_st])
-#alias_target('pl', pl_targets)
-#alias_target('contrib', contrib_targets)
-
-#alias_target('world', all_built, docs)
-#alias_target('install-world', install_quiet, installdocs)
-
-run_target('help',
-  command: [
-    perl, '-ne', 'next if /^#/; print',
-    files('doc/src/sgml/targets-meson.txt'),
-  ]
-)
 
 
 
