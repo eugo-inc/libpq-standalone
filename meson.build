@@ -328,8 +328,6 @@ endif
 # External programs
 perl = find_program(get_option('PERL'), required: true, native: true)
 python = find_program(get_option('PYTHON'), required: true, native: true)
-flex = find_program(get_option('FLEX'), native: true, version: '>= 2.5.35')
-bison = find_program(get_option('BISON'), native: true, version: '>= 2.3')
 sed = find_program(get_option('SED'), 'sed', native: true, required: false)
 prove = find_program(get_option('PROVE'), native: true, required: false)
 tar = find_program(get_option('TAR'), native: true, required: false)
@@ -342,36 +340,6 @@ missing = find_program('config/missing', native: true)
 cp = find_program('cp', required: false, native: true)
 xmllint_bin = find_program(get_option('XMLLINT'), native: true, required: false)
 xsltproc_bin = find_program(get_option('XSLTPROC'), native: true, required: false)
-
-bison_flags = []
-if bison.found()
-  bison_version_c = run_command(bison, '--version', check: true)
-  # bison version string helpfully is something like
-  # >>bison (GNU bison) 3.8.1<<
-  bison_version = bison_version_c.stdout().split(' ')[3].split('\n')[0]
-  if bison_version.version_compare('>=3.0')
-    bison_flags += ['-Wno-deprecated']
-  endif
-endif
-bison_cmd = [bison, bison_flags, '-o', '@OUTPUT0@', '-d', '@INPUT@']
-bison_kw = {
-  'output': ['@BASENAME@.c', '@BASENAME@.h'],
-  'command': bison_cmd,
-}
-
-flex_flags = []
-if flex.found()
-  flex_version_c = run_command(flex, '--version', check: true)
-  flex_version = flex_version_c.stdout().split(' ')[1].split('\n')[0]
-endif
-flex_wrapper = files('src/tools/pgflex')
-flex_cmd = [python, flex_wrapper,
-  '--builddir', '@BUILD_ROOT@',
-  '--srcdir', '@SOURCE_ROOT@',
-  '--privatedir', '@PRIVATE_DIR@',
-  '--flex', flex, '--perl', perl,
-  '-i', '@INPUT@', '-o', '@OUTPUT0@',
-]
 
 wget = find_program('wget', required: false, native: true)
 wget_flags = ['-O', '@OUTPUT0@', '--no-use-server-timestamps']
@@ -3182,9 +3150,7 @@ if meson.version().version_compare('>=0.57')
 
   summary(
     {
-      'bison': '@0@ @1@'.format(bison.full_path(), bison_version),
       'dtrace': dtrace,
-      'flex': '@0@ @1@'.format(flex.full_path(), flex_version),
     },
     section: 'Programs',
   )

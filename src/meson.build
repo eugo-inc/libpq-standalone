@@ -6,5 +6,3 @@
 subdir('bin')
 
 subdir('interfaces')
-
-subdir('tools/pg_bsd_indent')

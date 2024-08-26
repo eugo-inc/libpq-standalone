@@ -153,14 +153,8 @@ option('zstd', type: 'feature', value: 'auto',
 
 # Programs
 
-option('BISON', type: 'array', value: ['bison', 'win_bison'],
-  description: 'Path to bison binary')
-
 option('DTRACE', type: 'string', value: 'dtrace',
   description: 'Path to dtrace binary')
-
-option('FLEX', type: 'array', value: ['flex', 'win_flex'],
-  description: 'Path to flex binary')
 
 option('FOP', type: 'string', value: 'fop',
   description: 'Path to fop binary')
