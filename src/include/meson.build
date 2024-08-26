@@ -126,64 +126,6 @@ install_headers(
 #subdir('nodes')
 subdir('pch')
 #subdir('storage')
-#subdir('utils')
-
-header_subdirs = [
-#  'access',
-#  'archive',
-#  'catalog',
-#  'bootstrap',
-#  'commands',
-#  'common',
-#  'datatype',
-#  'executor',
-#  'fe_utils',
-#  'foreign',
-#  'jit',
-#  'lib',
-  'libpq',
-#  'mb',
-#  'nodes',
-#  'optimizer',
-#  'parser',
-#  'partitioning',
-#  'postmaster',
-#  'regex',
-#  'replication',
-#  'rewrite',
-#  'statistics',
-#  'storage',
-#  'tcop',
-#  'snowball',
-#  'tsearch',
-#  'utils',
-#  'port',
-#  'portability',
-]
-
-# XXX: installing headers this way has the danger of installing editor files
-# etc, unfortunately install_subdir() doesn't allow including / excluding by
-# pattern currently.
-#foreach d : header_subdirs
-#  if d == 'catalog'
-#    continue
-#  endif
-#  install_subdir(d, install_dir: dir_include_server,
-#                 exclude_files: ['.gitignore', 'meson.build'])
-#endforeach
-
-#install_subdir('catalog',
-#  install_dir: dir_include_server,
-#  exclude_files: [
-#    '.gitignore',
-#    'Makefile',
-#    'duplicate_oids',
-#    'meson.build',
-#    'reformat_dat_file.pl',
-#    'renumber_oids.pl',
-#    'unused_oids',
-#  ] + bki_data,
-#)
 
 # autoconf generates the file there, ensure we get a conflict
 generated_sources_ac += {'src/include': ['stamp-h', 'stamp-ext-h']}
