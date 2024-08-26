@@ -3050,8 +3050,6 @@ libpq_deps += [
 ]
 
 subdir('src/interfaces/libpq')
-# fe_utils depends on libpq
-subdir('src/fe_utils')
 
 # for frontend binaries
 frontend_code = declare_dependency(
