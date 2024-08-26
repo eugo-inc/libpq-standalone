@@ -3071,61 +3071,13 @@ frontend_code = declare_dependency(
   dependencies: [os_deps, libintl],
 )
 
-backend_both_deps += [
-  thread_dep,
-  bsd_auth,
-  gssapi,
-  icu,
-  icu_i18n,
-  ldap,
-  libintl,
-  libxml,
-  lz4,
-  pam,
-  ssl,
-  systemd,
-  zlib,
-  zstd,
-]
-
-backend_mod_deps = backend_both_deps + os_deps
-
-#backend_code = declare_dependency(
-#  compile_args: ['-DBUILDING_DLL'],
-#  include_directories: [postgres_inc],
-#  link_args: ldflags_be,
-#  link_with: [],
-#  sources: generated_headers + generated_backend_headers,
-#  dependencies: os_deps + backend_both_deps + backend_deps,
-#)
-
-# install these files only during test, not main install
-test_install_data = []
-test_install_libs = []
-
-# src/backend/meson.build defines backend_mod_code used for extension
-# libraries.
-
-
 # Then through the main sources. That way contrib can have dependencies on
 # main sources. Note that this explicitly doesn't enter src/test, right now a
 # few regression tests depend on contrib files.
 
 subdir('src')
 
-#subdir('contrib')
-
-#subdir('src/test')
-#subdir('src/interfaces/libpq/test')
-#subdir('src/interfaces/ecpg/test')
-
-#subdir('doc/src/sgml')
-
 generated_sources_ac += {'': ['GNUmakefile']}
-
-# After processing src/test, add test_install_libs to the testprep_targets
-# to build them
-testprep_targets += test_install_libs
 
 
 # If there are any files in the source directory that we also generate in the
@@ -3136,8 +3088,6 @@ message('checking for file conflicts between source and build directory')
 conflicting_files = []
 potentially_conflicting_files_t = []
 potentially_conflicting_files_t += generated_headers
-#potentially_conflicting_files_t += generated_backend_headers
-#potentially_conflicting_files_t += generated_backend_sources
 potentially_conflicting_files_t += generated_sources
 
 potentially_conflicting_files = []
