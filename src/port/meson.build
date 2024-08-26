@@ -150,9 +150,9 @@ endif
 # for use in shared libraries
 pgport = {}
 pgport_variants = {
-  '_srv': internal_lib_args + {
-    'dependencies': [backend_port_code],
-  },
+#  '_srv': internal_lib_args + {
+#    'dependencies': [backend_port_code],
+#  },
   '': default_lib_args + {
     'dependencies': [frontend_port_code],
   },
@@ -194,7 +194,7 @@ foreach name, opts : pgport_variants
   pgport += {name: lib}
 endforeach
 
-pgport_srv = pgport['_srv']
+#pgport_srv = pgport['_srv']
 pgport_static = pgport['']
 pgport_shlib = pgport['_shlib']
 

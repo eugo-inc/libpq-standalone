@@ -40,14 +40,8 @@ option('pgport', type: 'integer', value: 5432,
 option('cassert', type: 'boolean', value: false,
   description: 'Enable assertion checks (for debugging)')
 
-option('tap_tests', type: 'feature', value: 'auto',
-  description: 'Enable TAP tests')
-
 option('injection_points', type: 'boolean', value: false,
   description: 'Enable injection points')
-
-option('PG_TEST_EXTRA', type: 'string', value: '',
-  description: 'Enable selected extra tests')
 
 option('PG_GIT_REVISION', type: 'string', value: 'HEAD',
   description: 'git revision to be packaged by pgdist target')

@@ -128,10 +128,10 @@ common_sources_frontend_static += files(
 # layering violation, but ...
 pgcommon = {}
 pgcommon_variants = {
-  '_srv': internal_lib_args + {
-    'sources': common_sources + [lwlocknames_h] + [wait_event_types_h],
-    'dependencies': [backend_common_code],
-  },
+#  '_srv': internal_lib_args + {
+#    'sources': common_sources + [lwlocknames_h] + [wait_event_types_h],
+#    'dependencies': [backend_common_code],
+#  },
   '': default_lib_args + {
     'sources': common_sources_frontend_static,
     'dependencies': [frontend_common_code],
@@ -179,7 +179,7 @@ foreach name, opts : pgcommon_variants
   pgcommon += {name: lib}
 endforeach
 
-common_srv = pgcommon['_srv']
+#common_srv = pgcommon['_srv']
 common_shlib = pgcommon['_shlib']
 common_static = pgcommon['']
 

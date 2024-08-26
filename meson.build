@@ -1505,30 +1505,6 @@ endif
 
 
 ###############################################################
-# Library: tap test dependencies
-###############################################################
-
-# Check whether tap tests are enabled or not
-tap_tests_enabled = false
-tapopt = get_option('tap_tests')
-if not tapopt.disabled()
-  # Checking for perl modules for tap tests
-  perl_ipc_run_check = run_command(perl, 'config/check_modules.pl', check: false)
-  if perl_ipc_run_check.returncode() != 0
-    message(perl_ipc_run_check.stderr().strip())
-    if tapopt.enabled()
-      error('Additional Perl modules are required to run TAP tests.')
-    else
-      warning('Additional Perl modules are required to run TAP tests.')
-    endif
-  else
-    tap_tests_enabled = true
-  endif
-endif
-
-
-
-###############################################################
 # Library: zstd
 ###############################################################
 
@@ -3027,12 +3003,12 @@ frontend_port_code = declare_dependency(
   dependencies: os_deps,
 )
 
-backend_port_code = declare_dependency(
-  compile_args: ['-DBUILDING_DLL'],
-  include_directories: [postgres_inc],
-  sources: [errcodes], # errcodes.h is needed due to use of ereport
-  dependencies: os_deps,
-)
+#backend_port_code = declare_dependency(
+#  compile_args: ['-DBUILDING_DLL'],
+#  include_directories: [postgres_inc],
+#  sources: [errcodes], # errcodes.h is needed due to use of ereport
+#  dependencies: os_deps,
+#)
 
 subdir('src/port')
 
@@ -3114,14 +3090,14 @@ backend_both_deps += [
 
 backend_mod_deps = backend_both_deps + os_deps
 
-backend_code = declare_dependency(
-  compile_args: ['-DBUILDING_DLL'],
-  include_directories: [postgres_inc],
-  link_args: ldflags_be,
-  link_with: [],
-  sources: generated_headers + generated_backend_headers,
-  dependencies: os_deps + backend_both_deps + backend_deps,
-)
+#backend_code = declare_dependency(
+#  compile_args: ['-DBUILDING_DLL'],
+#  include_directories: [postgres_inc],
+#  link_args: ldflags_be,
+#  link_with: [],
+#  sources: generated_headers + generated_backend_headers,
+#  dependencies: os_deps + backend_both_deps + backend_deps,
+#)
 
 # install these files only during test, not main install
 test_install_data = []
@@ -3137,13 +3113,13 @@ test_install_libs = []
 
 subdir('src')
 
-subdir('contrib')
+#subdir('contrib')
 
-subdir('src/test')
-subdir('src/interfaces/libpq/test')
-subdir('src/interfaces/ecpg/test')
+#subdir('src/test')
+#subdir('src/interfaces/libpq/test')
+#subdir('src/interfaces/ecpg/test')
 
-subdir('doc/src/sgml')
+#subdir('doc/src/sgml')
 
 generated_sources_ac += {'': ['GNUmakefile']}
 
@@ -3160,8 +3136,8 @@ message('checking for file conflicts between source and build directory')
 conflicting_files = []
 potentially_conflicting_files_t = []
 potentially_conflicting_files_t += generated_headers
-potentially_conflicting_files_t += generated_backend_headers
-potentially_conflicting_files_t += generated_backend_sources
+#potentially_conflicting_files_t += generated_backend_headers
+#potentially_conflicting_files_t += generated_backend_sources
 potentially_conflicting_files_t += generated_sources
 
 potentially_conflicting_files = []
@@ -3255,321 +3231,16 @@ install_quiet = custom_target('install-quiet',
 )
 
 # Target to install files used for tests, which aren't installed by default
-install_test_files_args = [
-  install_files,
-  '--prefix', dir_prefix,
-  '--install', contrib_data_dir, test_install_data,
-  '--install', dir_lib_pkg, test_install_libs,
-]
-run_target('install-test-files',
-  command: [python] + install_test_files_args,
-  depends: testprep_targets,
-)
-
-
-
-###############################################################
-# Test prep
-###############################################################
-
-# DESTDIR for the installation we'll run tests in
-test_install_destdir = meson.build_root() / 'tmp_install/'
-
-# DESTDIR + prefix appropriately munged
-if build_system != 'windows'
-  # On unixoid systems this is trivial, we just prepend the destdir
-  assert(dir_prefix.startswith('/')) # enforced by meson
-  temp_install_bindir = '@0@@1@'.format(test_install_destdir, dir_prefix / dir_bin)
-  temp_install_libdir = '@0@@1@'.format(test_install_destdir, dir_prefix / dir_lib)
-else
-  # drives, drive-relative paths, etc make this complicated on windows, call
-  # into a copy of meson's logic for it
-  command = [
-    python, '-c',
-    'import sys; from pathlib import PurePath; d1=sys.argv[1]; d2=sys.argv[2]; print(str(PurePath(d1, *PurePath(d2).parts[1:])))',
-    test_install_destdir]
-  temp_install_bindir = run_command(command, dir_prefix / dir_bin, check: true).stdout().strip()
-  temp_install_libdir = run_command(command, dir_prefix / dir_lib, check: true).stdout().strip()
-endif
-
-meson_install_args = meson_args + ['install'] + {
-    'meson': ['--quiet', '--only-changed', '--no-rebuild'],
-    'muon': []
-}[meson_impl]
-
-# setup tests should be run first,
-# so define priority for these
-setup_tests_priority = 100
-test('tmp_install',
-    meson_bin, args: meson_install_args ,
-    env: {'DESTDIR':test_install_destdir},
-    priority: setup_tests_priority,
-    timeout: 300,
-    is_parallel: false,
-    suite: ['setup'])
-
-test('install_test_files',
-    python,
-    args: install_test_files_args + ['--destdir', test_install_destdir],
-    priority: setup_tests_priority,
-    is_parallel: false,
-    suite: ['setup'])
-
-test_result_dir = meson.build_root() / 'testrun'
-
-
-# XXX: pg_regress doesn't assign unique ports on windows. To avoid the
-# inevitable conflicts from running tests in parallel, hackishly assign
-# different ports for different tests.
-
-testport = 40000
-
-test_env = environment()
-
-test_initdb_template = meson.build_root() / 'tmp_install' / 'initdb-template'
-test_env.set('PG_REGRESS', pg_regress.full_path())
-test_env.set('REGRESS_SHLIB', regress_module.full_path())
-test_env.set('INITDB_TEMPLATE', test_initdb_template)
-
-# Test suites that are not safe by default but can be run if selected
-# by the user via the whitespace-separated list in variable PG_TEST_EXTRA.
-# Export PG_TEST_EXTRA so it can be checked in individual tap tests.
-test_env.set('PG_TEST_EXTRA', get_option('PG_TEST_EXTRA'))
-
-# Add the temporary installation to the library search path on platforms where
-# that works (everything but windows, basically). On windows everything
-# library-like gets installed into bindir, solving that issue.
-if library_path_var != ''
-  test_env.prepend(library_path_var, temp_install_libdir)
-endif
-
-
-# Create (and remove old) initdb template directory. Tests use that, where
-# possible, to make it cheaper to run tests.
-#
-# Use python to remove the old cached initdb, as we cannot rely on a working
-# 'rm' binary on windows.
-test('initdb_cache',
-     python,
-     args: [
-       '-c', '''
-import shutil
-import sys
-import subprocess
-
-shutil.rmtree(sys.argv[1], ignore_errors=True)
-sp = subprocess.run(sys.argv[2:] + [sys.argv[1]])
-sys.exit(sp.returncode)
-''',
-       test_initdb_template,
-       temp_install_bindir / 'initdb',
-       '--auth', 'trust', '--no-sync', '--no-instructions', '--lc-messages=C',
-       '--no-clean'
-     ],
-     priority: setup_tests_priority - 1,
-     timeout: 300,
-     is_parallel: false,
-     env: test_env,
-     suite: ['setup'])
-
-
-
-###############################################################
-# Test Generation
-###############################################################
-
-# When using a meson version understanding exclude_suites, define a
-# 'tmp_install' test setup (the default) that excludes tests running against a
-# pre-existing install and a 'running' setup that conflicts with creation of
-# the temporary installation and tap tests (which don't support running
-# against a running server).
-
-running_suites = []
-install_suites = []
-if meson.version().version_compare('>=0.57')
-  runningcheck = true
-else
-  runningcheck = false
-endif
-
-testwrap = files('src/tools/testwrap')
-
-foreach test_dir : tests
-  testwrap_base = [
-    testwrap,
-    '--basedir', meson.build_root(),
-    '--srcdir', test_dir['sd'],
-  ]
-
-  foreach kind, v : test_dir
-    if kind in ['sd', 'bd', 'name']
-      continue
-    endif
-
-    t = test_dir[kind]
-
-    if kind in ['regress', 'isolation', 'ecpg']
-      if kind == 'regress'
-        runner = pg_regress
-        fallback_dbname = 'regression_@0@'
-      elif kind == 'isolation'
-        runner = pg_isolation_regress
-        fallback_dbname = 'isolation_regression_@0@'
-      elif kind == 'ecpg'
-        runner = pg_regress_ecpg
-        fallback_dbname = 'ecpg_regression_@0@'
-      endif
-
-      test_group = test_dir['name']
-      test_group_running = test_dir['name'] + '-running'
-
-      test_output = test_result_dir / test_group / kind
-      test_output_running = test_result_dir / test_group_running/ kind
-
-      # Unless specified by the test, choose a non-conflicting database name,
-      # to avoid conflicts when running against existing server.
-      dbname = t.get('dbname',
-        fallback_dbname.format(test_dir['name']))
-
-      test_command_base = [
-        runner.full_path(),
-        '--inputdir', t.get('inputdir', test_dir['sd']),
-        '--expecteddir', t.get('expecteddir', test_dir['sd']),
-        '--bindir', '',
-        '--dlpath', test_dir['bd'],
-        '--max-concurrent-tests=20',
-        '--dbname', dbname,
-      ] + t.get('regress_args', [])
-
-      test_selection = []
-      if t.has_key('schedule')
-        test_selection += ['--schedule', t['schedule'],]
-      endif
-
-      if kind == 'isolation'
-        test_selection += t.get('specs', [])
-      else
-        test_selection += t.get('sql', [])
-      endif
-
-      env = test_env
-      env.prepend('PATH', temp_install_bindir, test_dir['bd'])
-
-      test_kwargs = {
-        'protocol': 'tap',
-        'priority': 10,
-        'timeout': 1000,
-        'depends': test_deps + t.get('deps', []),
-        'env': env,
-      } + t.get('test_kwargs', {})
-
-      test(test_group / kind,
-        python,
-        args: [
-          testwrap_base,
-          '--testgroup', test_group,
-          '--testname', kind,
-          '--',
-          test_command_base,
-          '--outputdir', test_output,
-          '--temp-instance', test_output / 'tmp_check',
-          '--port', testport.to_string(),
-          test_selection,
-        ],
-        suite: test_group,
-        kwargs: test_kwargs,
-      )
-      install_suites += test_group
-
-      # some tests can't support running against running DB
-      if runningcheck and t.get('runningcheck', true)
-        test(test_group_running / kind,
-          python,
-          args: [
-            testwrap_base,
-            '--testgroup', test_group_running,
-            '--testname', kind,
-            '--',
-            test_command_base,
-            '--outputdir', test_output_running,
-            test_selection,
-          ],
-          is_parallel: t.get('runningcheck-parallel', true),
-          suite: test_group_running,
-          kwargs: test_kwargs,
-        )
-        running_suites += test_group_running
-      endif
-
-      testport += 1
-    elif kind == 'tap'
-      testwrap_tap = testwrap_base
-      if not tap_tests_enabled
-        testwrap_tap += ['--skip', 'TAP tests not enabled']
-      endif
-
-      test_command = [
-        perl.path(),
-        '-I', meson.source_root() / 'src/test/perl',
-        '-I', test_dir['sd'],
-      ]
-
-      # Add temporary install, the build directory for non-installed binaries and
-      # also test/ for non-installed test binaries built separately.
-      env = test_env
-      env.prepend('PATH', temp_install_bindir, test_dir['bd'], test_dir['bd'] / 'test')
-
-      foreach name, value : t.get('env', {})
-        env.set(name, value)
-      endforeach
-
-      test_group = test_dir['name']
-      test_kwargs = {
-        'protocol': 'tap',
-        'suite': test_group,
-        'timeout': 1000,
-        'depends': test_deps + t.get('deps', []),
-        'env': env,
-      } + t.get('test_kwargs', {})
-
-      foreach onetap : t['tests']
-        # Make tap test names prettier, remove t/ and .pl
-        onetap_p = onetap
-        if onetap_p.startswith('t/')
-          onetap_p = onetap.split('t/')[1]
-        endif
-        if onetap_p.endswith('.pl')
-          onetap_p = fs.stem(onetap_p)
-        endif
-
-        test(test_dir['name'] / onetap_p,
-          python,
-          kwargs: test_kwargs,
-          args: testwrap_tap + [
-            '--testgroup', test_dir['name'],
-            '--testname', onetap_p,
-            '--', test_command,
-            test_dir['sd'] / onetap,
-          ],
-        )
-      endforeach
-      install_suites += test_group
-    else
-      error('unknown kind @0@ of test in @1@'.format(kind, test_dir['sd']))
-    endif
-
-  endforeach # kinds of tests
-
-endforeach # directories with tests
-
-# repeat condition so meson realizes version dependency
-if meson.version().version_compare('>=0.57')
-  add_test_setup('tmp_install',
-    is_default: true,
-    exclude_suites: running_suites)
-  add_test_setup('running',
-    exclude_suites: ['setup'] + install_suites)
-endif
+#install_test_files_args = [
+#  install_files,
+#  '--prefix', dir_prefix,
+#  '--install', contrib_data_dir, test_install_data,
+#  '--install', dir_lib_pkg, test_install_libs,
+#]
+#run_target('install-test-files',
+#  command: [python] + install_test_files_args,
+#  depends: testprep_targets,
+#)
 
 
 
@@ -3577,14 +3248,13 @@ endif
 # Pseudo targets
 ###############################################################
 
-alias_target('backend', backend_targets)
+#alias_target('backend', backend_targets)
 alias_target('bin', bin_targets + [libpq_st])
-alias_target('pl', pl_targets)
-alias_target('contrib', contrib_targets)
-alias_target('testprep', testprep_targets)
+#alias_target('pl', pl_targets)
+#alias_target('contrib', contrib_targets)
 
-alias_target('world', all_built, docs)
-alias_target('install-world', install_quiet, installdocs)
+#alias_target('world', all_built, docs)
+#alias_target('install-world', install_quiet, installdocs)
 
 run_target('help',
   command: [
