@@ -3056,7 +3056,7 @@ subdir('src/fe_utils')
 # for frontend binaries
 frontend_code = declare_dependency(
   include_directories: [postgres_inc],
-  link_with: [fe_utils, common_static, pgport_static],
+  link_with: [common_static, pgport_static],
   sources: generated_headers,
   dependencies: [os_deps, libintl],
 )
