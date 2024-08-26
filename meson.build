@@ -336,7 +336,7 @@ program_lz4 = find_program(get_option('LZ4'), native: true, required: false)
 openssl = find_program(get_option('OPENSSL'), native: true, required: false)
 program_zstd = find_program(get_option('ZSTD'), native: true, required: false)
 dtrace = find_program(get_option('DTRACE'), native: true, required: get_option('dtrace'))
-missing = find_program('config/missing', native: true)
+#missing = find_program('config/missing', native: true)
 cp = find_program('cp', required: false, native: true)
 xmllint_bin = find_program(get_option('XMLLINT'), native: true, required: false)
 xsltproc_bin = find_program(get_option('XSLTPROC'), native: true, required: false)
@@ -2949,7 +2949,7 @@ generated_sources_ac = {}
 
 subdir('src/include')
 
-subdir('config')
+#subdir('config')
 
 # Then through src/port and src/common, as most other things depend on them
 
