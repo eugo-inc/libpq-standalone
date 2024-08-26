@@ -103,9 +103,6 @@ option('libxslt', type: 'feature', value: 'auto',
 option('llvm', type: 'feature', value: 'disabled',
   description: 'LLVM support')
 
-option('lz4', type: 'feature', value: 'auto',
-  description: 'LZ4 support')
-
 option('nls', type: 'feature', value: 'auto',
   description: 'Native language support')
 
@@ -141,12 +138,6 @@ option('uuid', type: 'combo', choices: ['none', 'bsd', 'e2fs', 'ossp'],
   value: 'none',
   description: 'Use LIB for contrib/uuid-ossp support')
 
-option('zlib', type: 'feature', value: 'auto',
-  description: 'Enable zlib')
-
-option('zstd', type: 'feature', value: 'auto',
-  description: 'Enable zstd')
-
 
 # Programs
 
@@ -167,12 +158,3 @@ option('SED', type: 'string', value: 'gsed',
 
 option('STRIP', type: 'string', value: 'strip',
   description: 'Path to strip binary, used for PGXS emulation')
-
-option('XMLLINT', type: 'string', value: 'xmllint',
-  description: 'Path to xmllint binary')
-
-option('XSLTPROC', type: 'string', value: 'xsltproc',
-  description: 'Path to xsltproc binary')
-
-option('ZIC', type: 'string', value: 'zic',
-  description: 'Path to zic binary, when cross-compiling')

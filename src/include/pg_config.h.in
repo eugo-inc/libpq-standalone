@@ -247,8 +247,7 @@
 /* Define to 1 if you have the `ldap' library (-lldap). */
 #undef HAVE_LIBLDAP
 
-/* Define to 1 if you have the `lz4' library (-llz4). */
-#undef HAVE_LIBLZ4
+
 
 /* Define to 1 if you have the `m' library (-lm). */
 #undef HAVE_LIBM
@@ -274,11 +273,9 @@
 /* Define to 1 if you have the `xslt' library (-lxslt). */
 #undef HAVE_LIBXSLT
 
-/* Define to 1 if you have the `z' library (-lz). */
-#undef HAVE_LIBZ
 
-/* Define to 1 if you have the `zstd' library (-lzstd). */
-#undef HAVE_LIBZSTD
+
+
 
 /* Define to 1 if `long int' works and is 64 bits. */
 #undef HAVE_LONG_INT_64
@@ -720,8 +717,7 @@
 /* Define to 1 to use LoongArch CRCC instructions. */
 #undef USE_LOONGARCH_CRC32C
 
-/* Define to 1 to build with LZ4 support. (--with-lz4) */
-#undef USE_LZ4
+
 
 /* Define to select named POSIX semaphores. */
 #undef USE_NAMED_POSIX_SEMAPHORES
@@ -759,8 +755,7 @@
 /* Define to select Win32-style shared memory. */
 #undef USE_WIN32_SHARED_MEMORY
 
-/* Define to 1 to build with ZSTD support. (--with-zstd) */
-#undef USE_ZSTD
+
 
 /* Define to 1 if `wcstombs_l' requires <xlocale.h>. */
 #undef WCSTOMBS_L_IN_XLOCALE

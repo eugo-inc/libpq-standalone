@@ -332,8 +332,6 @@ sed = find_program(get_option('SED'), 'sed', native: true, required: false)
 prove = find_program(get_option('PROVE'), native: true, required: false)
 openssl = find_program(get_option('OPENSSL'), native: true, required: false)
 cp = find_program('cp', required: false, native: true)
-xmllint_bin = find_program(get_option('XMLLINT'), native: true, required: false)
-xsltproc_bin = find_program(get_option('XSLTPROC'), native: true, required: false)
 
 wget = find_program('wget', required: false, native: true)
 wget_flags = ['-O', '@OUTPUT0@', '--no-use-server-timestamps']
@@ -532,22 +530,6 @@ if cc.check_header('dns_sd.h', required: bonjouropt,
     args: test_c_args, include_directories: postgres_inc)
   cdata.set('USE_BONJOUR', 1)
   bonjour = declare_dependency()
-endif
-
-
-
-###############################################################
-# Option: docs in HTML and man page format
-###############################################################
-
-docs_opt = get_option('docs')
-docs_dep = not_found_dep
-if not docs_opt.disabled()
-  if xmllint_bin.found() and xsltproc_bin.found()
-    docs_dep = declare_dependency()
-  elif docs_opt.enabled()
-    error('missing required tools (xmllint and xsltproc needed) for docs in HTML / man page format')
-  endif
 endif
 
 
@@ -829,31 +811,6 @@ if not libxsltopt.disabled()
   endif
 else
   libxslt = not_found_dep
-endif
-
-
-
-###############################################################
-# Library: lz4
-###############################################################
-
-lz4opt = get_option('lz4')
-if not lz4opt.disabled()
-  lz4 = dependency('liblz4', required: false)
-  # Unfortunately the dependency is named differently with cmake
-  if not lz4.found() # combine with above once meson 0.60.0 is required
-    lz4 = dependency('lz4', required: lz4opt,
-                     method: 'cmake', modules: ['LZ4::lz4_shared'],
-                    )
-  endif
-
-  if lz4.found()
-    cdata.set('USE_LZ4', 1)
-    cdata.set('HAVE_LIBLZ4', 1)
-  endif
-
-else
-  lz4 = not_found_dep
 endif
 
 
@@ -1412,60 +1369,6 @@ if uuidopt != 'none'
            description: 'Define to 1 if you have @0@ UUID support.'.format(uuidname))
 else
   uuid = not_found_dep
-endif
-
-
-
-###############################################################
-# Library: zlib
-###############################################################
-
-zlibopt = get_option('zlib')
-zlib = not_found_dep
-if not zlibopt.disabled()
-  zlib_t = dependency('zlib', required: zlibopt)
-
-  if zlib_t.type_name() == 'internal'
-    # if fallback was used, we don't need to test if headers are present (they
-    # aren't built yet, so we can't test)
-    zlib = zlib_t
-  elif not zlib_t.found()
-    warning('did not find zlib')
-  elif not cc.has_header('zlib.h',
-      args: test_c_args, include_directories: postgres_inc,
-      dependencies: [zlib_t], required: zlibopt)
-    warning('zlib header not found')
-  else
-    zlib = zlib_t
-  endif
-
-  if zlib.found()
-    cdata.set('HAVE_LIBZ', 1)
-  endif
-endif
-
-
-
-###############################################################
-# Library: zstd
-###############################################################
-
-zstdopt = get_option('zstd')
-if not zstdopt.disabled()
-  zstd = dependency('libzstd', required: false, version: '>=1.4.0')
-  # Unfortunately the dependency is named differently with cmake
-  if not zstd.found() # combine with above once meson 0.60.0 is required
-    zstd = dependency('zstd', required: zstdopt, version: '>=1.4.0',
-                      method: 'cmake', modules: ['zstd::libzstd_shared'])
-  endif
-
-  if zstd.found()
-    cdata.set('USE_ZSTD', 1)
-    cdata.set('HAVE_LIBZSTD', 1)
-  endif
-
-else
-  zstd = not_found_dep
 endif
 
 
@@ -2948,14 +2851,7 @@ frontend_common_code = declare_dependency(
   compile_args: ['-DFRONTEND'],
   include_directories: [postgres_inc],
   sources: generated_headers,
-  dependencies: [os_deps, zlib, zstd, lz4],
-)
-
-backend_common_code = declare_dependency(
-  compile_args: ['-DBUILDING_DLL'],
-  include_directories: [postgres_inc],
-  sources: generated_headers,
-  dependencies: [os_deps, zlib, zstd],
+  dependencies: [os_deps],
 )
 
 subdir('src/common')
@@ -3132,7 +3028,6 @@ if meson.version().version_compare('>=0.57')
       'libxml': libxml,
       'libxslt': libxslt,
       'llvm': llvm,
-      'lz4': lz4,
       'nls': libintl,
       'openssl': ssl,
       'pam': pam,
@@ -3140,8 +3035,6 @@ if meson.version().version_compare('>=0.57')
       'selinux': selinux,
       'systemd': systemd,
       'uuid': uuid,
-      'zlib': zlib,
-      'zstd': zstd,
     },
     section: 'External libraries',
   )

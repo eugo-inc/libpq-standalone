@@ -5,7 +5,6 @@ common_sources = files(
   'base64.c',
   'binaryheap.c',
   'checksum_helper.c',
-  'compression.c',
   'encnames.c',
   'exec.c',
   'file_perm.c',
