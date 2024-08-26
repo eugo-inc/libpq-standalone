@@ -150,15 +150,6 @@ option('zstd', type: 'feature', value: 'auto',
 
 # Programs
 
-option('FOP', type: 'string', value: 'fop',
-  description: 'Path to fop binary')
-
-option('GZIP', type: 'string', value: 'gzip',
-  description: 'Path to gzip binary')
-
-option('LZ4', type: 'string', value: 'lz4',
-  description: 'Path to lz4 binary')
-
 option('OPENSSL', type: 'string', value: 'openssl',
   description: 'Path to openssl binary')
 
@@ -177,17 +168,11 @@ option('SED', type: 'string', value: 'gsed',
 option('STRIP', type: 'string', value: 'strip',
   description: 'Path to strip binary, used for PGXS emulation')
 
-option('TAR', type: 'string', value: 'tar',
-  description: 'Path to tar binary')
-
 option('XMLLINT', type: 'string', value: 'xmllint',
   description: 'Path to xmllint binary')
 
 option('XSLTPROC', type: 'string', value: 'xsltproc',
   description: 'Path to xsltproc binary')
-
-option('ZSTD', type: 'string', value: 'zstd',
-  description: 'Path to zstd binary')
 
 option('ZIC', type: 'string', value: 'zic',
   description: 'Path to zic binary, when cross-compiling')

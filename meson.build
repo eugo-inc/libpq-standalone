@@ -330,11 +330,7 @@ perl = find_program(get_option('PERL'), required: true, native: true)
 python = find_program(get_option('PYTHON'), required: true, native: true)
 sed = find_program(get_option('SED'), 'sed', native: true, required: false)
 prove = find_program(get_option('PROVE'), native: true, required: false)
-tar = find_program(get_option('TAR'), native: true, required: false)
-gzip = find_program(get_option('GZIP'), native: true, required: false)
-program_lz4 = find_program(get_option('LZ4'), native: true, required: false)
 openssl = find_program(get_option('OPENSSL'), native: true, required: false)
-program_zstd = find_program(get_option('ZSTD'), native: true, required: false)
 cp = find_program('cp', required: false, native: true)
 xmllint_bin = find_program(get_option('XMLLINT'), native: true, required: false)
 xsltproc_bin = find_program(get_option('XSLTPROC'), native: true, required: false)
@@ -551,23 +547,6 @@ if not docs_opt.disabled()
     docs_dep = declare_dependency()
   elif docs_opt.enabled()
     error('missing required tools (xmllint and xsltproc needed) for docs in HTML / man page format')
-  endif
-endif
-
-
-
-###############################################################
-# Option: docs in PDF format
-###############################################################
-
-docs_pdf_opt = get_option('docs_pdf')
-docs_pdf_dep = not_found_dep
-if not docs_pdf_opt.disabled()
-  fop = find_program(get_option('FOP'), native: true, required: docs_pdf_opt)
-  if xmllint_bin.found() and xsltproc_bin.found() and fop.found()
-    docs_pdf_dep = declare_dependency()
-  elif docs_pdf_opt.enabled()
-    error('missing required tools for docs in PDF format')
   endif
 endif
 
