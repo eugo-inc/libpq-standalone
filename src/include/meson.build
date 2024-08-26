@@ -98,9 +98,4 @@ install_headers(
   install_dir: dir_include_internal / 'libpq',
 )
 
-#subdir('catalog')
-#subdir('nodes')
 subdir('pch')
-
-# autoconf generates the file there, ensure we get a conflict
-generated_sources_ac += {'src/include': ['stamp-h', 'stamp-ext-h']}
