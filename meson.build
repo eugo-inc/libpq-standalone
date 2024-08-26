@@ -2894,7 +2894,7 @@ gen_export_kwargs = {
 ### Helpers for custom targets used across the tree
 ###
 
-catalog_pm = files('src/backend/catalog/Catalog.pm')
+#catalog_pm = files('src/backend/catalog/Catalog.pm')
 perfect_hash_pm = files('src/tools/PerfectHash.pm')
 gen_kwlist_deps = [perfect_hash_pm]
 gen_kwlist_cmd = [
