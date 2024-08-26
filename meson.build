@@ -344,8 +344,6 @@ xsltproc_bin = find_program(get_option('XSLTPROC'), native: true, required: fals
 wget = find_program('wget', required: false, native: true)
 wget_flags = ['-O', '@OUTPUT0@', '--no-use-server-timestamps']
 
-install_files = files('src/tools/install_files')
-
 
 
 ###############################################################
