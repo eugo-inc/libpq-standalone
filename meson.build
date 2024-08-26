@@ -3154,7 +3154,6 @@ all_built = [
   bin_targets,
   libpq_st,
   nls_mo_targets,
-  ecpg_targets,
 ]
 
 # Meson's default install target is quite verbose. Provide one that is quiet.
