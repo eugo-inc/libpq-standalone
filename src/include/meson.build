@@ -98,35 +98,35 @@ install_headers(
   install_dir: dir_include_internal / 'libpq',
 )
 
-install_headers(
-  'c.h',
-  'fmgr.h',
-  'funcapi.h',
-  'getopt_long.h',
-  'miscadmin.h',
-  'pg_config_manual.h',
-  'pg_getopt.h',
-  'pg_trace.h',
-  'pgstat.h',
-  'pgtar.h',
-  'pgtime.h',
-  'port.h',
-  'postgres.h',
-  'postgres_ext.h',
-  'postgres_fe.h',
-  'varatt.h',
-  'windowapi.h',
-  pg_config_ext,
-  pg_config_os,
-  pg_config,
-  install_dir: dir_include_server,
-)
+#install_headers(
+#  'c.h',
+#  'fmgr.h',
+#  'funcapi.h',
+#  'getopt_long.h',
+#  'miscadmin.h',
+#  'pg_config_manual.h',
+#  'pg_getopt.h',
+#  'pg_trace.h',
+#  'pgstat.h',
+#  'pgtar.h',
+#  'pgtime.h',
+#  'port.h',
+#  'postgres.h',
+#  'postgres_ext.h',
+#  'postgres_fe.h',
+#  'varatt.h',
+#  'windowapi.h',
+#  pg_config_ext,
+#  pg_config_os,
+#  pg_config,
+#  install_dir: dir_include_server,
+#)
 
-subdir('catalog')
-subdir('nodes')
+#subdir('catalog')
+#subdir('nodes')
 subdir('pch')
-subdir('storage')
-subdir('utils')
+#subdir('storage')
+#subdir('utils')
 
 header_subdirs = [
 #  'access',
@@ -164,13 +164,13 @@ header_subdirs = [
 # XXX: installing headers this way has the danger of installing editor files
 # etc, unfortunately install_subdir() doesn't allow including / excluding by
 # pattern currently.
-foreach d : header_subdirs
-  if d == 'catalog'
-    continue
-  endif
-  install_subdir(d, install_dir: dir_include_server,
-                 exclude_files: ['.gitignore', 'meson.build'])
-endforeach
+#foreach d : header_subdirs
+#  if d == 'catalog'
+#    continue
+#  endif
+#  install_subdir(d, install_dir: dir_include_server,
+#                 exclude_files: ['.gitignore', 'meson.build'])
+#endforeach
 
 #install_subdir('catalog',
 #  install_dir: dir_include_server,
