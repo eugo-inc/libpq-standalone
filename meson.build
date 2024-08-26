@@ -335,8 +335,6 @@ gzip = find_program(get_option('GZIP'), native: true, required: false)
 program_lz4 = find_program(get_option('LZ4'), native: true, required: false)
 openssl = find_program(get_option('OPENSSL'), native: true, required: false)
 program_zstd = find_program(get_option('ZSTD'), native: true, required: false)
-dtrace = find_program(get_option('DTRACE'), native: true, required: get_option('dtrace'))
-#missing = find_program('config/missing', native: true)
 cp = find_program('cp', required: false, native: true)
 xmllint_bin = find_program(get_option('XMLLINT'), native: true, required: false)
 xsltproc_bin = find_program(get_option('XSLTPROC'), native: true, required: false)
@@ -396,7 +394,6 @@ meson_bin = find_program(meson_binpath, native: true)
 ###############################################################
 
 cdata.set('USE_ASSERT_CHECKING', get_option('cassert') ? 1 : false)
-cdata.set('USE_INJECTION_POINTS', get_option('injection_points') ? 1 : false)
 
 blocksize = get_option('blocksize').to_int() * 1024
 
@@ -3145,13 +3142,6 @@ if meson.version().version_compare('>=0.57')
       section: 'Compiler Flags',
     )
   endif
-
-  summary(
-    {
-      'dtrace': dtrace,
-    },
-    section: 'Programs',
-  )
 
   summary(
     {

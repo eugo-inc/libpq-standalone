@@ -40,9 +40,6 @@ option('pgport', type: 'integer', value: 5432,
 option('cassert', type: 'boolean', value: false,
   description: 'Enable assertion checks (for debugging)')
 
-option('injection_points', type: 'boolean', value: false,
-  description: 'Enable injection points')
-
 option('PG_GIT_REVISION', type: 'string', value: 'HEAD',
   description: 'git revision to be packaged by pgdist target')
 
@@ -152,9 +149,6 @@ option('zstd', type: 'feature', value: 'auto',
 
 
 # Programs
-
-option('DTRACE', type: 'string', value: 'dtrace',
-  description: 'Path to dtrace binary')
 
 option('FOP', type: 'string', value: 'fop',
   description: 'Path to fop binary')
