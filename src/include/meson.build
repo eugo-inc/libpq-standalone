@@ -98,34 +98,9 @@ install_headers(
   install_dir: dir_include_internal / 'libpq',
 )
 
-#install_headers(
-#  'c.h',
-#  'fmgr.h',
-#  'funcapi.h',
-#  'getopt_long.h',
-#  'miscadmin.h',
-#  'pg_config_manual.h',
-#  'pg_getopt.h',
-#  'pg_trace.h',
-#  'pgstat.h',
-#  'pgtar.h',
-#  'pgtime.h',
-#  'port.h',
-#  'postgres.h',
-#  'postgres_ext.h',
-#  'postgres_fe.h',
-#  'varatt.h',
-#  'windowapi.h',
-#  pg_config_ext,
-#  pg_config_os,
-#  pg_config,
-#  install_dir: dir_include_server,
-#)
-
 #subdir('catalog')
 #subdir('nodes')
 subdir('pch')
-#subdir('storage')
 
 # autoconf generates the file there, ensure we get a conflict
 generated_sources_ac += {'src/include': ['stamp-h', 'stamp-ext-h']}
