@@ -1031,7 +1031,6 @@ builtins = [
   'clz',
   'ctz',
   'constant_p',
-  'frame_address',
   'popcount',
   'unreachable',
 ]
@@ -1594,20 +1593,12 @@ endif
 # unnecessary checks over and over, particularly on windows.
 header_checks = [
   'atomic.h',
-  'copyfile.h',
   'crtdefs.h',
-  'execinfo.h',
   'getopt.h',
-  'ifaddrs.h',
   'mbarrier.h',
   'stdbool.h',
   'strings.h',
-  'sys/epoll.h',
-  'sys/event.h',
   'sys/personality.h',
-  'sys/prctl.h',
-  'sys/procctl.h',
-  'sys/signalfd.h',
   'sys/ucred.h',
   'termios.h',
   'ucred.h',
@@ -1627,7 +1618,6 @@ endforeach
 decl_checks = [
   ['F_FULLFSYNC', 'fcntl.h'],
   ['fdatasync', 'unistd.h'],
-  ['posix_fadvise', 'fcntl.h'],
   ['strlcat', 'string.h'],
   ['strlcpy', 'string.h'],
   ['strnlen', 'string.h'],
@@ -1688,38 +1678,6 @@ if cc.has_type('socklen_t',
   cdata.set('HAVE_SOCKLEN_T', 1)
 endif
 
-if cc.has_member('struct sockaddr', 'sa_len',
-    args: test_c_args, include_directories: postgres_inc,
-    prefix: '''
-#include <sys/types.h>
-#include <sys/socket.h>''')
-  cdata.set('HAVE_STRUCT_SOCKADDR_SA_LEN', 1)
-endif
-
-if cc.has_member('struct tm', 'tm_zone',
-    args: test_c_args, include_directories: postgres_inc,
-    prefix: '''
-#include <sys/types.h>
-#include <time.h>
-''')
-  cdata.set('HAVE_STRUCT_TM_TM_ZONE', 1)
-endif
-
-if cc.compiles('''
-#include <time.h>
-extern int foo(void);
-int foo(void)
-{
-    return timezone / 60;
-}
-''',
-    name: 'global variable `timezone\' exists',
-    args: test_c_args, include_directories: postgres_inc)
-  cdata.set('HAVE_INT_TIMEZONE', 1)
-else
-  cdata.set('HAVE_INT_TIMEZONE', false)
-endif
-
 if cc.has_type('union semun',
     args: test_c_args,
     include_directories: postgres_inc,
@@ -1753,53 +1711,6 @@ endif
 if not cc.has_type('locale_t', prefix: '#include <locale.h>') and \
    cc.has_type('locale_t', prefix: '#include <xlocale.h>')
   cdata.set('LOCALE_T_IN_XLOCALE', 1)
-endif
-
-# Check if the C compiler understands typeof or a variant.  Define
-# HAVE_TYPEOF if so, and define 'typeof' to the actual key word.
-foreach kw : ['typeof', '__typeof__', 'decltype']
-  if cc.compiles('''
-int main(void)
-{
-    int x = 0;
-    @0@(x) y;
-    y = x;
-    return y;
-}
-'''.format(kw),
-    name: 'typeof()',
-    args: test_c_args, include_directories: postgres_inc)
-
-    cdata.set('HAVE_TYPEOF', 1)
-    if kw != 'typeof'
-      cdata.set('typeof', kw)
-    endif
-
-    break
-  endif
-endforeach
-
-
-# Try to find a declaration for wcstombs_l().  It might be in stdlib.h
-# (following the POSIX requirement for wcstombs()), or in locale.h, or in
-# xlocale.h.  If it's in the latter, define WCSTOMBS_L_IN_XLOCALE.
-wcstombs_l_test = '''
-#include <stdlib.h>
-#include <locale.h>
-@0@
-
-void main(void)
-{
-#ifndef wcstombs_l
-    (void) wcstombs_l;
-#endif
-}
-'''
-if (not cc.compiles(wcstombs_l_test.format(''),
-      name: 'wcstombs_l') and
-    cc.compiles(wcstombs_l_test.format('#include <xlocale.h>'),
-      name: 'wcstombs_l in xlocale.h'))
-    cdata.set('WCSTOMBS_L_IN_XLOCALE', 1)
 endif
 
 
@@ -1854,38 +1765,21 @@ endif
 # XXX: Might be worth conditioning some checks on the OS, to avoid doing
 # unnecessary checks over and over, particularly on windows.
 func_checks = [
-  ['_configthreadlocale', {'skip': host_system != 'windows'}],
-  ['backtrace_symbols', {'dependencies': [execinfo_dep]}],
-  ['clock_gettime', {'dependencies': [rt_dep], 'define': false}],
-  ['copyfile'],
-  ['copy_file_range'],
   # gcc/clang's sanitizer helper library provides dlopen but not dlsym, thus
   # when enabling asan the dlopen check doesn't notice that -ldl is actually
   # required. Just checking for dlsym() ought to suffice.
   ['dlsym', {'dependencies': [dl_dep], 'define': false}],
   ['explicit_bzero'],
-  ['getifaddrs'],
   ['getopt', {'dependencies': [getopt_dep, gnugetopt_dep], 'skip': always_replace_getopt}],
   ['getopt_long', {'dependencies': [getopt_dep, gnugetopt_dep], 'skip': always_replace_getopt_long}],
   ['getpeereid'],
   ['getpeerucred'],
   ['inet_aton'],
   ['inet_pton'],
-  ['kqueue'],
-  ['mbstowcs_l'],
   ['memset_s'],
   ['mkdtemp'],
-  ['posix_fadvise'],
-  ['posix_fallocate'],
-  ['ppoll'],
   ['pthread_barrier_wait', {'dependencies': [thread_dep]}],
-  ['pthread_is_threaded_np', {'dependencies': [thread_dep]}],
   ['sem_init', {'dependencies': [rt_dep, thread_dep], 'skip': sema_kind != 'unnamed_posix', 'define': false}],
-  ['setproctitle', {'dependencies': [util_dep]}],
-  ['setproctitle_fast'],
-  ['shm_open', {'dependencies': [rt_dep], 'define': false}],
-  ['shm_unlink', {'dependencies': [rt_dep], 'define': false}],
-  ['shmget', {'dependencies': [cygipc_dep], 'define': false}],
   ['socket', {'dependencies': [socket_dep], 'define': false}],
   ['strchrnul'],
   ['strerror_r', {'dependencies': [thread_dep]}],
@@ -1894,10 +1788,6 @@ func_checks = [
   ['strnlen'],
   ['strsep'],
   ['strsignal'],
-  ['sync_file_range'],
-  ['syncfs'],
-  ['uselocale'],
-  ['wcstombs_l'],
 ]
 
 func_check_results = {}

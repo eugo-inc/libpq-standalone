@@ -53,22 +53,16 @@
 /* Define to 1 if you have the <atomic.h> header file. */
 #undef HAVE_ATOMIC_H
 
-/* Define to 1 if you have the `backtrace_symbols' function. */
-#undef HAVE_BACKTRACE_SYMBOLS
+
 
 /* Define to 1 if you have the `BIO_meth_new' function. */
 #undef HAVE_BIO_METH_NEW
 
 
 
-/* Define to 1 if you have the `copyfile' function. */
-#undef HAVE_COPYFILE
 
-/* Define to 1 if you have the <copyfile.h> header file. */
-#undef HAVE_COPYFILE_H
 
-/* Define to 1 if you have the `copy_file_range' function. */
-#undef HAVE_COPY_FILE_RANGE
+
 
 /* Define to 1 if you have the <crtdefs.h> header file. */
 #undef HAVE_CRTDEFS_H
@@ -88,9 +82,7 @@
 
 
 
-/* Define to 1 if you have the declaration of `posix_fadvise', and to 0 if you
-   don't. */
-#undef HAVE_DECL_POSIX_FADVISE
+
 
 /* Define to 1 if you have the declaration of `preadv', and to 0 if you don't.
    */
@@ -118,8 +110,6 @@
 
 
 
-/* Define to 1 if you have the <execinfo.h> header file. */
-#undef HAVE_EXECINFO_H
 
 /* Define to 1 if you have the `explicit_bzero' function. */
 #undef HAVE_EXPLICIT_BZERO
@@ -147,8 +137,7 @@
    */
 #undef HAVE_GCC__SYNC_INT64_CAS
 
-/* Define to 1 if you have the `getifaddrs' function. */
-#undef HAVE_GETIFADDRS
+
 
 /* Define to 1 if you have the `getopt' function. */
 #undef HAVE_GETOPT
@@ -189,8 +178,7 @@
 /* Define to 1 if you have the `HMAC_CTX_new' function. */
 #undef HAVE_HMAC_CTX_NEW
 
-/* Define to 1 if you have the <ifaddrs.h> header file. */
-#undef HAVE_IFADDRS_H
+
 
 /* Define to 1 if you have the `inet_aton' function. */
 #undef HAVE_INET_ATON
@@ -213,14 +201,11 @@
 /* Define to 1 if you have the global variable 'int optreset'. */
 #undef HAVE_INT_OPTRESET
 
-/* Define to 1 if you have the global variable 'int timezone'. */
-#undef HAVE_INT_TIMEZONE
+
 
 /* Define to 1 if __builtin_constant_p(x) implies "i"(x) acceptance. */
 #undef HAVE_I_CONSTRAINT__BUILTIN_CONSTANT_P
 
-/* Define to 1 if you have the `kqueue' function. */
-#undef HAVE_KQUEUE
 
 /* Define to 1 if you have the `ldap_initialize' function. */
 #undef HAVE_LDAP_INITIALIZE
@@ -266,8 +251,7 @@
 /* Define to 1 if you have the <mbarrier.h> header file. */
 #undef HAVE_MBARRIER_H
 
-/* Define to 1 if you have the `mbstowcs_l' function. */
-#undef HAVE_MBSTOWCS_L
+
 
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
@@ -286,14 +270,10 @@
 /* Define to 1 if you have the <pam/pam_appl.h> header file. */
 #undef HAVE_PAM_PAM_APPL_H
 
-/* Define to 1 if you have the `posix_fadvise' function. */
-#undef HAVE_POSIX_FADVISE
 
-/* Define to 1 if you have the `posix_fallocate' function. */
-#undef HAVE_POSIX_FALLOCATE
 
-/* Define to 1 if you have the `ppoll' function. */
-#undef HAVE_PPOLL
+
+
 
 /* Define if you have POSIX threads libraries and header files. */
 #undef HAVE_PTHREAD
@@ -301,8 +281,7 @@
 /* Define to 1 if you have the `pthread_barrier_wait' function. */
 #undef HAVE_PTHREAD_BARRIER_WAIT
 
-/* Define to 1 if you have the `pthread_is_threaded_np' function. */
-#undef HAVE_PTHREAD_IS_THREADED_NP
+
 
 /* Have PTHREAD_PRIO_INHERIT. */
 #undef HAVE_PTHREAD_PRIO_INHERIT
@@ -340,11 +319,7 @@
 /* Define to 1 if you have the <security/pam_appl.h> header file. */
 #undef HAVE_SECURITY_PAM_APPL_H
 
-/* Define to 1 if you have the `setproctitle' function. */
-#undef HAVE_SETPROCTITLE
 
-/* Define to 1 if you have the `setproctitle_fast' function. */
-#undef HAVE_SETPROCTITLE_FAST
 
 /* Define to 1 if the system has the type `socklen_t'. */
 #undef HAVE_SOCKLEN_T
@@ -394,38 +369,28 @@
 /* Define to 1 if the system has the type `struct option'. */
 #undef HAVE_STRUCT_OPTION
 
-/* Define to 1 if `sa_len' is a member of `struct sockaddr'. */
-#undef HAVE_STRUCT_SOCKADDR_SA_LEN
 
-/* Define to 1 if `tm_zone' is a member of `struct tm'. */
-#undef HAVE_STRUCT_TM_TM_ZONE
 
-/* Define to 1 if you have the `syncfs' function. */
-#undef HAVE_SYNCFS
 
-/* Define to 1 if you have the `sync_file_range' function. */
-#undef HAVE_SYNC_FILE_RANGE
+
+
+
+
 
 /* Define to 1 if you have the syslog interface. */
 #undef HAVE_SYSLOG
 
-/* Define to 1 if you have the <sys/epoll.h> header file. */
-#undef HAVE_SYS_EPOLL_H
 
-/* Define to 1 if you have the <sys/event.h> header file. */
-#undef HAVE_SYS_EVENT_H
+
+
 
 /* Define to 1 if you have the <sys/personality.h> header file. */
 #undef HAVE_SYS_PERSONALITY_H
 
-/* Define to 1 if you have the <sys/prctl.h> header file. */
-#undef HAVE_SYS_PRCTL_H
 
-/* Define to 1 if you have the <sys/procctl.h> header file. */
-#undef HAVE_SYS_PROCCTL_H
 
-/* Define to 1 if you have the <sys/signalfd.h> header file. */
-#undef HAVE_SYS_SIGNALFD_H
+
+
 
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #undef HAVE_SYS_STAT_H
@@ -439,8 +404,7 @@
 /* Define to 1 if you have the <termios.h> header file. */
 #undef HAVE_TERMIOS_H
 
-/* Define to 1 if your compiler understands `typeof' or something similar. */
-#undef HAVE_TYPEOF
+
 
 /* Define to 1 if you have the <ucred.h> header file. */
 #undef HAVE_UCRED_H
@@ -457,8 +421,7 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
-/* Define to 1 if you have the `uselocale' function. */
-#undef HAVE_USELOCALE
+
 
 
 
@@ -471,8 +434,7 @@
 /* Define to 1 if your compiler knows the visibility("hidden") attribute. */
 #undef HAVE_VISIBILITY_ATTRIBUTE
 
-/* Define to 1 if you have the `wcstombs_l' function. */
-#undef HAVE_WCSTOMBS_L
+
 
 /* Define to 1 if you have the `X509_get_signature_info' function. */
 #undef HAVE_X509_GET_SIGNATURE_INFO
@@ -498,14 +460,12 @@
 /* Define to 1 if your compiler understands __builtin_clz. */
 #undef HAVE__BUILTIN_CLZ
 
-/* Define to 1 if your compiler understands __builtin_constant_p. */
-#undef HAVE__BUILTIN_CONSTANT_P
+
 
 /* Define to 1 if your compiler understands __builtin_ctz. */
 #undef HAVE__BUILTIN_CTZ
 
-/* Define to 1 if your compiler understands __builtin_frame_address. */
-#undef HAVE__BUILTIN_FRAME_ADDRESS
+
 
 /* Define to 1 if your compiler understands __builtin_$op_overflow. */
 #undef HAVE__BUILTIN_OP_OVERFLOW
@@ -519,8 +479,7 @@
 /* Define to 1 if your compiler understands __builtin_unreachable. */
 #undef HAVE__BUILTIN_UNREACHABLE
 
-/* Define to 1 if you have the `_configthreadlocale' function. */
-#undef HAVE__CONFIGTHREADLOCALE
+
 
 /* Define to 1 if you have __cpuid. */
 #undef HAVE__CPUID
@@ -707,8 +666,7 @@
 
 
 
-/* Define to 1 if `wcstombs_l' requires <xlocale.h>. */
-#undef WCSTOMBS_L_IN_XLOCALE
+
 
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */

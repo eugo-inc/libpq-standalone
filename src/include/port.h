@@ -521,7 +521,6 @@ extern int	wait_result_to_exit_code(int exit_status);
 #define HAVE_POLL_H 1
 #define HAVE_READLINK 1
 #define HAVE_SETSID 1
-#define HAVE_SHM_OPEN 1
 #define HAVE_SYMLINK 1
 #endif
 

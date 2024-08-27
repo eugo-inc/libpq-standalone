@@ -126,42 +126,6 @@
 #define EXEC_BACKEND
 #endif
 
-/*
- * USE_POSIX_FADVISE controls whether Postgres will attempt to use the
- * posix_fadvise() kernel call.  Usually the automatic configure tests are
- * sufficient, but some older Linux distributions had broken versions of
- * posix_fadvise().  If necessary you can remove the #define here.
- */
-#if HAVE_DECL_POSIX_FADVISE && defined(HAVE_POSIX_FADVISE)
-#define USE_POSIX_FADVISE
-#endif
-
-/*
- * USE_PREFETCH code should be compiled only if we have a way to implement
- * prefetching.  (This is decoupled from USE_POSIX_FADVISE because there
- * might in future be support for alternative low-level prefetch APIs.
- * If you change this, you probably need to adjust the error message in
- * check_effective_io_concurrency.)
- */
-#ifdef USE_POSIX_FADVISE
-#define USE_PREFETCH
-#endif
-
-/*
- * Default and maximum values for backend_flush_after, bgwriter_flush_after
- * and checkpoint_flush_after; measured in blocks.  Currently, these are
- * enabled by default if sync_file_range() exists, ie, only on Linux.  Perhaps
- * we could also enable by default if we have mmap and msync(MS_ASYNC)?
- */
-#ifdef HAVE_SYNC_FILE_RANGE
-#define DEFAULT_BACKEND_FLUSH_AFTER 0	/* never enabled by default */
-#define DEFAULT_BGWRITER_FLUSH_AFTER 64
-#define DEFAULT_CHECKPOINT_FLUSH_AFTER 32
-#else
-#define DEFAULT_BACKEND_FLUSH_AFTER 0
-#define DEFAULT_BGWRITER_FLUSH_AFTER 0
-#define DEFAULT_CHECKPOINT_FLUSH_AFTER 0
-#endif
 /* upper limit for all three variables */
 #define WRITEBACK_MAX_PENDING_FLUSHES 256
 
