@@ -33,13 +33,9 @@ config_paths_data.set_quoted('PGSHAREDIR', dir_prefix / dir_data)
 config_paths_data.set_quoted('SYSCONFDIR', dir_prefix / dir_sysconf)
 config_paths_data.set_quoted('INCLUDEDIR', dir_prefix / dir_include)
 config_paths_data.set_quoted('PKGINCLUDEDIR', dir_prefix / dir_include_pkg)
-config_paths_data.set_quoted('INCLUDEDIRSERVER', dir_prefix / dir_include_server)
 config_paths_data.set_quoted('LIBDIR', dir_prefix / dir_lib)
 config_paths_data.set_quoted('PKGLIBDIR', dir_prefix / dir_lib_pkg)
 config_paths_data.set_quoted('LOCALEDIR', dir_prefix / dir_locale)
-config_paths_data.set_quoted('DOCDIR', dir_prefix / dir_doc)
-config_paths_data.set_quoted('HTMLDIR', dir_prefix / dir_doc_html)
-config_paths_data.set_quoted('MANDIR', dir_prefix / dir_man)
 
 
 var_cc = ' '.join(cc.cmd_array())

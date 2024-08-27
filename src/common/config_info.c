@@ -50,18 +50,6 @@ get_configdata(const char *my_exec_path, size_t *configdata_len)
 	configdata[i].setting = pstrdup(path);
 	i++;
 
-	configdata[i].name = pstrdup("DOCDIR");
-	get_doc_path(my_exec_path, path);
-	cleanup_path(path);
-	configdata[i].setting = pstrdup(path);
-	i++;
-
-	configdata[i].name = pstrdup("HTMLDIR");
-	get_html_path(my_exec_path, path);
-	cleanup_path(path);
-	configdata[i].setting = pstrdup(path);
-	i++;
-
 	configdata[i].name = pstrdup("INCLUDEDIR");
 	get_include_path(my_exec_path, path);
 	cleanup_path(path);
@@ -70,12 +58,6 @@ get_configdata(const char *my_exec_path, size_t *configdata_len)
 
 	configdata[i].name = pstrdup("PKGINCLUDEDIR");
 	get_pkginclude_path(my_exec_path, path);
-	cleanup_path(path);
-	configdata[i].setting = pstrdup(path);
-	i++;
-
-	configdata[i].name = pstrdup("INCLUDEDIR-SERVER");
-	get_includeserver_path(my_exec_path, path);
 	cleanup_path(path);
 	configdata[i].setting = pstrdup(path);
 	i++;
@@ -94,12 +76,6 @@ get_configdata(const char *my_exec_path, size_t *configdata_len)
 
 	configdata[i].name = pstrdup("LOCALEDIR");
 	get_locale_path(my_exec_path, path);
-	cleanup_path(path);
-	configdata[i].setting = pstrdup(path);
-	i++;
-
-	configdata[i].name = pstrdup("MANDIR");
-	get_man_path(my_exec_path, path);
 	cleanup_path(path);
 	configdata[i].setting = pstrdup(path);
 	i++;
