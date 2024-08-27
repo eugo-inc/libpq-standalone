@@ -642,49 +642,6 @@ endif
 
 
 ###############################################################
-# Library: libxml
-###############################################################
-
-libxmlopt = get_option('libxml')
-if not libxmlopt.disabled()
-  libxml = dependency('libxml-2.0', required: false, version: '>= 2.6.23')
-  # Unfortunately the dependency is named differently with cmake
-  if not libxml.found() # combine with above once meson 0.60.0 is required
-    libxml = dependency('LibXml2', required: libxmlopt, version: '>= 2.6.23',
-      method: 'cmake')
-  endif
-
-  if libxml.found()
-    cdata.set('USE_LIBXML', 1)
-  endif
-else
-  libxml = not_found_dep
-endif
-
-
-
-###############################################################
-# Library: libxslt
-###############################################################
-
-libxsltopt = get_option('libxslt')
-if not libxsltopt.disabled()
-  libxslt = dependency('libxslt', required: false)
-  # Unfortunately the dependency is named differently with cmake
-  if not libxslt.found() # combine with above once meson 0.60.0 is required
-    libxslt = dependency('LibXslt', required: libxsltopt, method: 'cmake')
-  endif
-
-  if libxslt.found()
-    cdata.set('USE_LIBXSLT', 1)
-  endif
-else
-  libxslt = not_found_dep
-endif
-
-
-
-###############################################################
 # Library: Tcl (for pltcl)
 #
 # NB: tclConfig.sh is used in autoconf build for getting
@@ -2838,8 +2795,6 @@ if meson.version().version_compare('>=0.57')
     {
       'gss': gssapi,
       'ldap': ldap,
-      'libxml': libxml,
-      'libxslt': libxslt,
       'nls': libintl,
       'openssl': ssl,
       'pam': pam,

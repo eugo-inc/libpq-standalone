@@ -66,12 +66,6 @@ option('ldap', type: 'feature', value: 'auto',
 option('libedit_preferred', type: 'boolean', value: false,
   description: 'Prefer BSD Libedit over GNU Readline')
 
-option('libxml', type: 'feature', value: 'auto',
-  description: 'XML support')
-
-option('libxslt', type: 'feature', value: 'auto',
-  description: 'XSLT support in contrib/xml2')
-
 option('nls', type: 'feature', value: 'auto',
   description: 'Native language support')
 
