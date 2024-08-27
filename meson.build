@@ -328,8 +328,6 @@ endif
 # External programs
 perl = find_program(get_option('PERL'), required: true, native: true)
 python = find_program(get_option('PYTHON'), required: true, native: true)
-sed = find_program(get_option('SED'), 'sed', native: true, required: false)
-prove = find_program(get_option('PROVE'), native: true, required: false)
 openssl = find_program(get_option('OPENSSL'), native: true, required: false)
 cp = find_program('cp', required: false, native: true)
 
