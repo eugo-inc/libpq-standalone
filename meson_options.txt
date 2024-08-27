@@ -61,14 +61,8 @@ option('ssl', type: 'combo', choices: ['auto', 'none', 'openssl'],
 
 # Programs
 
-option('OPENSSL', type: 'string', value: 'openssl',
-  description: 'Path to openssl binary')
-
 option('PERL', type: 'string', value: 'perl',
   description: 'Path to perl binary')
 
 option('PYTHON', type: 'array', value: ['python3', 'python'],
   description: 'Path to python binary')
-
-option('STRIP', type: 'string', value: 'strip',
-  description: 'Path to strip binary, used for PGXS emulation')

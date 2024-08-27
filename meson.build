@@ -325,11 +325,6 @@ endif
 # External programs
 perl = find_program(get_option('PERL'), required: true, native: true)
 python = find_program(get_option('PYTHON'), required: true, native: true)
-openssl = find_program(get_option('OPENSSL'), native: true, required: false)
-cp = find_program('cp', required: false, native: true)
-
-wget = find_program('wget', required: false, native: true)
-wget_flags = ['-O', '@OUTPUT0@', '--no-use-server-timestamps']
 
 
 
