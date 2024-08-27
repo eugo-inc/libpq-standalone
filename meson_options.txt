@@ -42,21 +42,6 @@ option('rpath', type: 'boolean', value: true,
 
 # External dependencies
 
-option('bonjour', type: 'feature', value: 'auto',
-  description: 'Bonjour support')
-
-option('docs', type: 'feature', value: 'auto',
-  description: 'Documentation in HTML and man page format')
-
-option('docs_pdf', type: 'feature', value: 'auto',
-  description: 'Documentation in PDF format')
-
-option('docs_html_style', type: 'combo', choices: ['simple', 'website'],
-  description: 'CSS stylesheet for HTML documentation')
-
-option('dtrace', type: 'feature', value: 'disabled',
-  description: 'DTrace support')
-
 option('gssapi', type: 'feature', value: 'auto',
   description: 'GSSAPI support')
 
@@ -72,10 +57,6 @@ option('pam', type: 'feature', value: 'auto',
 option('ssl', type: 'combo', choices: ['auto', 'none', 'openssl'],
   value: 'auto',
   description: 'Use LIB for SSL/TLS support (openssl)')
-
-option('uuid', type: 'combo', choices: ['none', 'bsd', 'e2fs', 'ossp'],
-  value: 'none',
-  description: 'Use LIB for contrib/uuid-ossp support')
 
 
 # Programs

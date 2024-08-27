@@ -789,63 +789,6 @@ endif
 
 
 ###############################################################
-# Library: uuid
-###############################################################
-
-uuidopt = get_option('uuid')
-if uuidopt != 'none'
-  uuidname = uuidopt.to_upper()
-  if uuidopt == 'e2fs'
-    uuid = dependency('uuid', required: true)
-    uuidfunc = 'uuid_generate'
-    uuidheader = 'uuid/uuid.h'
-  elif uuidopt == 'bsd'
-    # libc should have uuid function
-    uuid = declare_dependency()
-    uuidfunc = 'uuid_to_string'
-    uuidheader = 'uuid.h'
-  elif uuidopt == 'ossp'
-    # In upstream, the package and library is called just 'uuid', but many
-    # distros change it to 'ossp-uuid'.
-    uuid = dependency('ossp-uuid', 'uuid', required: false)
-    uuidfunc = 'uuid_export'
-    uuidheader = 'uuid.h'
-
-    # Hardcoded lookup for ossp-uuid. This is necessary as ossp-uuid on
-    # windows installs neither a pkg-config nor a cmake dependency
-    # information. Nor is there another supported uuid implementation
-    # available on windows.
-    if not uuid.found()
-      uuid = cc.find_library('ossp-uuid',
-        required: false, dirs: test_lib_d,
-        has_headers: uuidheader, header_include_directories: postgres_inc)
-    endif
-    if not uuid.found()
-      uuid = cc.find_library('uuid',
-        required: true, dirs: test_lib_d,
-        has_headers: uuidheader, header_include_directories: postgres_inc)
-    endif
-  else
-    error('unknown uuid build option value: @0@'.format(uuidopt))
-  endif
-
-  if not cc.has_header_symbol(uuidheader, uuidfunc,
-                              args: test_c_args,
-                              include_directories: postgres_inc,
-                              dependencies: uuid)
-    error('uuid library @0@ missing required function @1@'.format(uuidopt, uuidfunc))
-  endif
-  cdata.set('HAVE_@0@'.format(uuidheader.underscorify().to_upper()), 1)
-
-  cdata.set('HAVE_UUID_@0@'.format(uuidname), 1,
-           description: 'Define to 1 if you have @0@ UUID support.'.format(uuidname))
-else
-  uuid = not_found_dep
-endif
-
-
-
-###############################################################
 # Compiler tests
 ###############################################################
 
@@ -2444,7 +2387,6 @@ if meson.version().version_compare('>=0.57')
       'nls': libintl,
       'openssl': ssl,
       'pam': pam,
-      'uuid': uuid,
     },
     section: 'External libraries',
   )
