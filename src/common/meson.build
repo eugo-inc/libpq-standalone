@@ -169,5 +169,3 @@ endforeach
 
 common_shlib = pgcommon['_shlib']
 common_static = pgcommon['']
-
-subdir('unicode')

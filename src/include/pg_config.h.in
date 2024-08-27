@@ -672,8 +672,7 @@
 
 
 
-/* Define to build with ICU support. (--with-icu) */
-#undef USE_ICU
+
 
 
 

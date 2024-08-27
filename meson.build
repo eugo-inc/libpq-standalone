@@ -642,40 +642,6 @@ endif
 
 
 ###############################################################
-# Library: icu
-###############################################################
-
-icuopt = get_option('icu')
-if not icuopt.disabled()
-  icu = dependency('icu-uc', required: false)
-  if icu.found()
-    icu_i18n = dependency('icu-i18n', required: true)
-  endif
-
-  # Unfortunately the dependency is named differently with cmake
-  if not icu.found() # combine with above once meson 0.60.0 is required
-    icu = dependency('ICU', required: icuopt,
-                     components: ['uc'], modules: ['ICU::uc'], method: 'cmake')
-    if icu.found()
-      icu_i18n = dependency('ICU', required: true,
-                            components: ['i18n'], modules: ['ICU::i18n'])
-    endif
-  endif
-
-  if icu.found()
-    cdata.set('USE_ICU', 1)
-  else
-    icu_i18n = not_found_dep
-  endif
-
-else
-  icu = not_found_dep
-  icu_i18n = not_found_dep
-endif
-
-
-
-###############################################################
 # Library: libxml
 ###############################################################
 
@@ -2871,7 +2837,6 @@ if meson.version().version_compare('>=0.57')
   summary(
     {
       'gss': gssapi,
-      'icu': icu,
       'ldap': ldap,
       'libxml': libxml,
       'libxslt': libxslt,
