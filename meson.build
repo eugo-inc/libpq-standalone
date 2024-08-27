@@ -680,35 +680,6 @@ endif
 
 
 ###############################################################
-# Library: selinux
-###############################################################
-
-selinux = not_found_dep
-selinuxopt = get_option('selinux')
-if meson.version().version_compare('>=0.59')
-  selinuxopt = selinuxopt.disable_auto_if(host_system != 'linux')
-endif
-selinux = dependency('libselinux', required: selinuxopt, version: '>= 2.1.10')
-cdata.set('HAVE_LIBSELINUX',
-  selinux.found() ? 1 : false)
-
-
-
-###############################################################
-# Library: systemd
-###############################################################
-
-systemd = not_found_dep
-systemdopt = get_option('systemd')
-if meson.version().version_compare('>=0.59')
-  systemdopt = systemdopt.disable_auto_if(host_system != 'linux')
-endif
-systemd = dependency('libsystemd', required: systemdopt)
-cdata.set('USE_SYSTEMD', systemd.found() ? 1 : false)
-
-
-
-###############################################################
 # Library: SSL
 ###############################################################
 
@@ -2473,8 +2444,6 @@ if meson.version().version_compare('>=0.57')
       'nls': libintl,
       'openssl': ssl,
       'pam': pam,
-      'selinux': selinux,
-      'systemd': systemd,
       'uuid': uuid,
     },
     section: 'External libraries',

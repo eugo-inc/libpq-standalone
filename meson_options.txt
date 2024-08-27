@@ -69,15 +69,9 @@ option('nls', type: 'feature', value: 'auto',
 option('pam', type: 'feature', value: 'auto',
   description: 'PAM support')
 
-option('selinux', type: 'feature', value: 'auto',
-  description: 'SELinux support')
-
 option('ssl', type: 'combo', choices: ['auto', 'none', 'openssl'],
   value: 'auto',
   description: 'Use LIB for SSL/TLS support (openssl)')
-
-option('systemd', type: 'feature', value: 'auto',
-  description: 'systemd support')
 
 option('uuid', type: 'combo', choices: ['none', 'bsd', 'e2fs', 'ossp'],
   value: 'none',
