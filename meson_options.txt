@@ -72,12 +72,6 @@ option('nls', type: 'feature', value: 'auto',
 option('pam', type: 'feature', value: 'auto',
   description: 'PAM support')
 
-option('plperl', type: 'feature', value: 'auto',
-  description: 'Build Perl modules (PL/Perl)')
-
-option('plpython', type: 'feature', value: 'auto',
-  description: 'Build Python modules (PL/Python)')
-
 option('readline', type: 'feature', value: 'auto',
   description: 'Use GNU Readline or BSD Libedit for editing')
 
