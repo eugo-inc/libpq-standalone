@@ -1,31 +1,9 @@
 # Copyright (c) 2022-2024, PostgreSQL Global Development Group
 
-# Data layout influencing options
-
-option('blocksize', type: 'combo',
-  choices: ['1', '2', '4', '8', '16', '32'],
-  value: '8',
-  description: 'Relation block size, in kilobytes')
-
-option('wal_blocksize', type: 'combo',
-  choices: ['1', '2', '4', '8', '16', '32', '64'],
-  value: '8',
-  description: 'WAL block size, in kilobytes')
-
-option('segsize', type: 'integer', value: 1,
-  description: 'Segment size, in gigabytes')
-
-option('segsize_blocks', type: 'integer', value: 0,
-  description: 'Segment size, in blocks')
-
-
 # Miscellaneous options
 
 option('krb_srvnam', type: 'string', value: 'postgres',
   description: 'Default Kerberos service principal for GSSAPI')
-
-option('system_tzdata', type: 'string', value: '',
-  description: 'Use system time zone data in specified directory')
 
 
 # Defaults
@@ -147,14 +125,8 @@ option('OPENSSL', type: 'string', value: 'openssl',
 option('PERL', type: 'string', value: 'perl',
   description: 'Path to perl binary')
 
-option('PROVE', type: 'string', value: 'prove',
-  description: 'Path to prove binary')
-
 option('PYTHON', type: 'array', value: ['python3', 'python'],
   description: 'Path to python binary')
-
-option('SED', type: 'string', value: 'gsed',
-  description: 'Path to sed binary')
 
 option('STRIP', type: 'string', value: 'strip',
   description: 'Path to strip binary, used for PGXS emulation')
