@@ -963,23 +963,6 @@ if cc.links('''
 endif
 
 
-# Check if the C compiler knows computed gotos (gcc extension, also
-# available in at least clang).  If so, define HAVE_COMPUTED_GOTO.
-#
-# Checking whether computed gotos are supported syntax-wise ought to
-# be enough, as the syntax is otherwise illegal.
-if cc.compiles('''
-    static inline int foo(void)
-    {
-      void *labeladdrs[] = {&&my_label};
-      goto *labeladdrs[0];
-      my_label:
-      return 1;
-    }''',
-    args: test_c_args)
-  cdata.set('HAVE_COMPUTED_GOTO', 1)
-endif
-
 
 # Check if the C compiler understands _Static_assert(),
 # and define HAVE__STATIC_ASSERT if so.
