@@ -42,18 +42,13 @@ typedef struct
 
 static const InfoItem info_items[] = {
 	{"--bindir", "BINDIR"},
-	{"--docdir", "DOCDIR"},
-	{"--htmldir", "HTMLDIR"},
 	{"--includedir", "INCLUDEDIR"},
 	{"--pkgincludedir", "PKGINCLUDEDIR"},
-	{"--includedir-server", "INCLUDEDIR-SERVER"},
 	{"--libdir", "LIBDIR"},
 	{"--pkglibdir", "PKGLIBDIR"},
 	{"--localedir", "LOCALEDIR"},
-	{"--mandir", "MANDIR"},
 	{"--sharedir", "SHAREDIR"},
 	{"--sysconfdir", "SYSCONFDIR"},
-	{"--pgxs", "PGXS"},
 	{"--configure", "CONFIGURE"},
 	{"--cc", "CC"},
 	{"--cppflags", "CPPFLAGS"},
@@ -76,19 +71,14 @@ help(void)
 	printf(_("  %s [OPTION]...\n\n"), progname);
 	printf(_("Options:\n"));
 	printf(_("  --bindir              show location of user executables\n"));
-	printf(_("  --docdir              show location of documentation files\n"));
-	printf(_("  --htmldir             show location of HTML documentation files\n"));
 	printf(_("  --includedir          show location of C header files of the client\n"
 			 "                        interfaces\n"));
 	printf(_("  --pkgincludedir       show location of other C header files\n"));
-	printf(_("  --includedir-server   show location of C header files for the server\n"));
 	printf(_("  --libdir              show location of object code libraries\n"));
 	printf(_("  --pkglibdir           show location of dynamically loadable modules\n"));
 	printf(_("  --localedir           show location of locale support files\n"));
-	printf(_("  --mandir              show location of manual pages\n"));
 	printf(_("  --sharedir            show location of architecture-independent support files\n"));
 	printf(_("  --sysconfdir          show location of system-wide configuration files\n"));
-	printf(_("  --pgxs                show location of extension makefile\n"));
 	printf(_("  --configure           show options given to \"configure\" script when\n"
 			 "                        PostgreSQL was built\n"));
 	printf(_("  --cc                  show CC value used when PostgreSQL was built\n"));
