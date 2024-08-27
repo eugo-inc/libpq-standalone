@@ -642,36 +642,6 @@ endif
 
 
 ###############################################################
-# Library: Tcl (for pltcl)
-#
-# NB: tclConfig.sh is used in autoconf build for getting
-# TCL_SHARED_BUILD, TCL_INCLUDE_SPEC, TCL_LIBS and TCL_LIB_SPEC
-# variables. For now we have not seen a need to copy
-# that behaviour to the meson build.
-###############################################################
-
-tclopt = get_option('pltcl')
-tcl_version = get_option('tcl_version')
-tcl_dep = not_found_dep
-if not tclopt.disabled()
-
-  # via pkg-config
-  tcl_dep = dependency(tcl_version, required: false)
-
-  if not tcl_dep.found()
-    tcl_dep = cc.find_library(tcl_version,
-      required: tclopt,
-      dirs: test_lib_d)
-  endif
-
-  if not cc.has_header('tcl.h', dependencies: tcl_dep, required: tclopt)
-    tcl_dep = not_found_dep
-  endif
-endif
-
-
-
-###############################################################
 # Library: pam
 ###############################################################
 
