@@ -157,7 +157,6 @@ cdata.set_quoted('CONFIGURE_ARGS', '')
 ###############################################################
 
 exesuffix = '' # overridden below where necessary
-dlsuffix = '.so' # overridden below where necessary
 library_path_var = 'LD_LIBRARY_PATH'
 
 # Format of file to control exports from libraries, and how to pass them to
@@ -196,13 +195,11 @@ portname = host_system
 if host_system == 'cygwin'
   sema_kind = 'unnamed_posix'
   cppflags += '-D_GNU_SOURCE'
-  dlsuffix = '.dll'
   mod_link_args_fmt = ['@0@']
   mod_link_with_name = 'lib@0@.a'
   mod_link_with_dir = 'libdir'
 
 elif host_system == 'darwin'
-  dlsuffix = '.dylib'
   library_path_var = 'DYLD_LIBRARY_PATH'
 
   export_file_format = 'darwin'
@@ -263,7 +260,6 @@ elif host_system == 'sunos'
 elif host_system == 'windows'
   portname = 'win32'
   exesuffix = '.exe'
-  dlsuffix = '.dll'
   library_path_var = ''
   if cc.get_id() != 'msvc'
     # define before including <time.h> for getting localtime_r() etc. on MinGW
@@ -1840,11 +1836,7 @@ if sema_kind == 'unnamed_posix' and \
   sema_kind = 'sysv'
 endif
 
-cdata.set('USE_@0@_SHARED_MEMORY'.format(shmem_kind.to_upper()), 1)
-cdata.set('USE_@0@_SEMAPHORES'.format(sema_kind.to_upper()), 1)
-
 cdata.set('MEMSET_LOOP_LIMIT', memset_loop_limit)
-cdata.set_quoted('DLSUFFIX', dlsuffix)
 
 
 # built later than the rest of the version metadata, we need SIZEOF_VOID_P
@@ -1998,7 +1990,6 @@ gen_export_kwargs = {
 ### Helpers for custom targets used across the tree
 ###
 
-#catalog_pm = files('src/backend/catalog/Catalog.pm')
 perfect_hash_pm = files('src/tools/PerfectHash.pm')
 gen_kwlist_deps = [perfect_hash_pm]
 gen_kwlist_cmd = [
@@ -2087,8 +2078,6 @@ generated_sources_ac = {}
 
 subdir('src/include')
 
-#subdir('config')
-
 # Then through src/port and src/common, as most other things depend on them
 
 frontend_port_code = declare_dependency(
@@ -2096,13 +2085,6 @@ frontend_port_code = declare_dependency(
   include_directories: [postgres_inc],
   dependencies: os_deps,
 )
-
-#backend_port_code = declare_dependency(
-#  compile_args: ['-DBUILDING_DLL'],
-#  include_directories: [postgres_inc],
-#  sources: [errcodes], # errcodes.h is needed due to use of ereport
-#  dependencies: os_deps,
-#)
 
 subdir('src/port')
 

@@ -35,8 +35,7 @@
 /* Define to the default TCP port number as a string constant. */
 #undef DEF_PGPORT_STR
 
-/* Define to the file name extension of dynamically-loadable modules. */
-#undef DLSUFFIX
+
 
 /* Define to build with GSSAPI support. (--with-gssapi) */
 #undef ENABLE_GSS
@@ -629,8 +628,7 @@
 
 
 
-/* Define to select named POSIX semaphores. */
-#undef USE_NAMED_POSIX_SEMAPHORES
+
 
 /* Define to 1 to build with OpenSSL support. (--with-ssl=openssl) */
 #undef USE_OPENSSL
@@ -649,20 +647,9 @@
 
 
 
-/* Define to select SysV-style semaphores. */
-#undef USE_SYSV_SEMAPHORES
 
-/* Define to select SysV-style shared memory. */
-#undef USE_SYSV_SHARED_MEMORY
 
-/* Define to select unnamed POSIX semaphores. */
-#undef USE_UNNAMED_POSIX_SEMAPHORES
 
-/* Define to select Win32-style semaphores. */
-#undef USE_WIN32_SEMAPHORES
-
-/* Define to select Win32-style shared memory. */
-#undef USE_WIN32_SHARED_MEMORY
 
 
 
