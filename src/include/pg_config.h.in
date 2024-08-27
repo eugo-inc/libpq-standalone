@@ -85,13 +85,9 @@
    don't. */
 #undef HAVE_DECL_F_FULLFSYNC
 
-/* Define to 1 if you have the declaration of
-   `LLVMCreateGDBRegistrationListener', and to 0 if you don't. */
-#undef HAVE_DECL_LLVMCREATEGDBREGISTRATIONLISTENER
 
-/* Define to 1 if you have the declaration of
-   `LLVMCreatePerfJITEventListener', and to 0 if you don't. */
-#undef HAVE_DECL_LLVMCREATEPERFJITEVENTLISTENER
+
+
 
 /* Define to 1 if you have the declaration of `posix_fadvise', and to 0 if you
    don't. */
@@ -672,11 +668,9 @@
 /* Define to 1 to use AVX-512 popcount instructions with a runtime check. */
 #undef USE_AVX512_POPCNT_WITH_RUNTIME_CHECK
 
-/* Define to 1 to build with Bonjour support. (--with-bonjour) */
-#undef USE_BONJOUR
 
-/* Define to 1 to build with BSD Authentication support. (--with-bsd-auth) */
-#undef USE_BSD_AUTH
+
+
 
 /* Define to build with ICU support. (--with-icu) */
 #undef USE_ICU
@@ -693,8 +687,7 @@
    (--with-libxslt) */
 #undef USE_LIBXSLT
 
-/* Define to 1 to build with LLVM based JIT support. (--with-llvm) */
-#undef USE_LLVM
+
 
 /* Define to 1 to use LoongArch CRCC instructions. */
 #undef USE_LOONGARCH_CRC32C

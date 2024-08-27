@@ -90,11 +90,8 @@ postgres_lib_d = get_option('extra_lib_dirs')
 cppflags = []
 
 cflags = []
-cxxflags = []
 cflags_warn = []
-cxxflags_warn = []
 cflags_mod = []
-cxxflags_mod = []
 
 ldflags = []
 ldflags_be = []
@@ -470,39 +467,6 @@ test_c_args = cppflags + cflags
 
 
 ###############################################################
-# Library: bsd-auth
-###############################################################
-
-bsd_authopt = get_option('bsd_auth')
-bsd_auth = not_found_dep
-if cc.check_header('bsd_auth.h', required: bsd_authopt,
-    args: test_c_args, include_directories: postgres_inc)
-  cdata.set('USE_BSD_AUTH', 1)
-  bsd_auth = declare_dependency()
-endif
-
-
-
-###############################################################
-# Library: bonjour
-#
-# For now don't search for DNSServiceRegister in a library - only Apple's
-# Bonjour implementation, which is always linked, works.
-###############################################################
-
-bonjouropt = get_option('bonjour')
-bonjour = not_found_dep
-if cc.check_header('dns_sd.h', required: bonjouropt,
-    args: test_c_args, include_directories: postgres_inc) and \
-   cc.has_function('DNSServiceRegister',
-    args: test_c_args, include_directories: postgres_inc)
-  cdata.set('USE_BONJOUR', 1)
-  bonjour = declare_dependency()
-endif
-
-
-
-###############################################################
 # Library: GSSAPI
 ###############################################################
 
@@ -673,35 +637,6 @@ if ldap.found()
   cdata.set('USE_LDAP', 1)
 else
   assert(not ldap_r.found())
-endif
-
-
-
-###############################################################
-# Library: LLVM
-###############################################################
-
-llvmopt = get_option('llvm')
-llvm = not_found_dep
-if add_languages('cpp', required: llvmopt, native: false)
-  llvm = dependency('llvm', version: '>=10', method: 'config-tool', required: llvmopt)
-
-  if llvm.found()
-
-    cdata.set('USE_LLVM', 1)
-
-    cpp = meson.get_compiler('cpp')
-
-    llvm_binpath = llvm.get_variable(configtool: 'bindir')
-
-    ccache = find_program('ccache', native: true, required: false)
-
-    # Some distros put LLVM and clang in different paths, so fallback to
-    # find via PATH, too.
-    clang = find_program(llvm_binpath / 'clang', 'clang', required: true)
-  endif
-elif llvmopt.auto()
-  message('llvm requires a C++ compiler')
 endif
 
 
@@ -1593,7 +1528,6 @@ if cc.has_function_attribute('visibility:default') and \
   # inlineshidden to C code as well... And either way, we want to put these
   # flags into exported files (pgxs, .pc files).
   cflags_mod += '-fvisibility=hidden'
-  cxxflags_mod += ['-fvisibility=hidden', '-fvisibility-inlines-hidden']
   ldflags_mod += '-fvisibility=hidden'
 endif
 
@@ -1743,9 +1677,6 @@ common_functional_flags = [
 ]
 
 cflags += cc.get_supported_arguments(common_functional_flags)
-if llvm.found()
-  cxxflags += cpp.get_supported_arguments(common_functional_flags)
-endif
 
 vectorize_cflags = cc.get_supported_arguments(['-ftree-vectorize'])
 unroll_loops_cflags = cc.get_supported_arguments(['-funroll-loops'])
@@ -1767,9 +1698,6 @@ common_warning_flags = [
 ]
 
 cflags_warn += cc.get_supported_arguments(common_warning_flags)
-if llvm.found()
-  cxxflags_warn += cpp.get_supported_arguments(common_warning_flags)
-endif
 
 # A few places with imported code get a pass on -Wdeclaration-after-statement, remember
 # the result for them
@@ -1820,9 +1748,6 @@ negative_warning_flags = [
 foreach w : negative_warning_flags
   if cc.has_argument('-W' + w)
     cflags_warn += '-Wno-' + w
-  endif
-  if llvm.found() and cpp.has_argument('-W' + w)
-    cxxflags_warn += '-Wno-' + w
   endif
 endforeach
 
@@ -1882,9 +1807,6 @@ elif optimization == 's'
 endif
 
 cflags_builtin = cc.get_supported_arguments(common_builtin_flags)
-if llvm.found()
-  cxxflags_builtin = cpp.get_supported_arguments(common_builtin_flags)
-endif
 
 
 
@@ -2229,14 +2151,6 @@ decl_checks += [
   ['preadv', 'sys/uio.h'],
   ['pwritev', 'sys/uio.h'],
 ]
-
-# Check presence of some optional LLVM functions.
-if llvm.found()
-  decl_checks += [
-    ['LLVMCreateGDBRegistrationListener', 'llvm-c/ExecutionEngine.h'],
-    ['LLVMCreatePerfJITEventListener', 'llvm-c/ExecutionEngine.h'],
-  ]
-endif
 
 foreach c : decl_checks
   func = c.get(0)
@@ -2608,10 +2522,7 @@ endif
 add_project_arguments(cflags, language: ['c'])
 add_project_arguments(cppflags, language: ['c'])
 add_project_arguments(cflags_warn, language: ['c'])
-add_project_arguments(cxxflags, language: ['cpp'])
-add_project_arguments(cppflags, language: ['cpp'])
-add_project_arguments(cxxflags_warn, language: ['cpp'])
-add_project_link_arguments(ldflags, language: ['c', 'cpp'])
+add_project_link_arguments(ldflags, language: ['c'])
 
 
 # Collect a number of lists of things while recursing through the source
@@ -2957,34 +2868,13 @@ if meson.version().version_compare('>=0.57')
     section: 'Compiler Flags',
   )
 
-  if llvm.found()
-    summary(
-      {
-        'C++ compiler': '@0@ @1@'.format(cpp.get_id(), cpp.version()),
-      },
-      section: 'Compiler',
-    )
-
-    summary(
-      {
-        'C++ FLAGS, functional': ' '.join(cxxflags),
-        'C++ FLAGS, warnings': ' '.join(cxxflags_warn),
-        'C++ FLAGS, user specified': ' '.join(get_option('cpp_args')),
-      },
-      section: 'Compiler Flags',
-    )
-  endif
-
   summary(
     {
-      'bonjour': bonjour,
-      'bsd_auth': bsd_auth,
       'gss': gssapi,
       'icu': icu,
       'ldap': ldap,
       'libxml': libxml,
       'libxslt': libxslt,
-      'llvm': llvm,
       'nls': libintl,
       'openssl': ssl,
       'pam': pam,

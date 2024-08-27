@@ -41,11 +41,6 @@ config_paths_data.set_quoted('LOCALEDIR', dir_prefix / dir_locale)
 var_cc = ' '.join(cc.cmd_array())
 var_cpp = ' '.join(cc.cmd_array() + ['-E'])
 var_cflags = ' '.join(cflags + cflags_builtin + cflags_warn + get_option('c_args'))
-if llvm.found()
-  var_cxxflags = ' '.join(cxxflags + cxxflags_builtin + cxxflags_warn + get_option('cpp_args'))
-else
-  var_cxxflags = ''
-endif
 var_cppflags = ' '.join(cppflags)
 var_cflags_sl = ' '.join(cc.get_supported_arguments('-fPIC'))
 # explicitly add -Wl,--as-needed, normally added by meson, but we want it for
