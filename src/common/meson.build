@@ -5,8 +5,6 @@ common_sources = files(
   'encnames.c',
   'exec.c',
   'ip.c',
-  'keywords.c',
-  'kwlookup.c',
   'link-canary.c',
   'md5_common.c',
   'percentrepl.c',
@@ -42,14 +40,6 @@ else
     'sha2.c',
   )
 endif
-
-common_kwlist = custom_target('kwlist',
-  input: files('../include/parser/kwlist.h'),
-  output: 'kwlist_d.h',
-  depend_files: gen_kwlist_deps,
-  command: [gen_kwlist_cmd, '--extern'])
-generated_sources += common_kwlist
-common_sources += common_kwlist
 
 # The code imported from Ryu gets a pass on declaration-after-statement,
 # in order to keep it more closely aligned with its upstream.
