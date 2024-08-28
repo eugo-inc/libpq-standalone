@@ -39,9 +39,6 @@
 /* Define to 1 if you want National Language Support. (--enable-nls) */
 #undef ENABLE_NLS
 
-/* Define to 1 if you have the `append_history' function. */
-#undef HAVE_APPEND_HISTORY
-
 /* Define to 1 if you have the `ASN1_STRING_get0_data' function. */
 #undef HAVE_ASN1_STRING_GET0_DATA
 
@@ -142,12 +139,6 @@
 /* Define to 1 if you have the <gssapi.h> header file. */
 #undef HAVE_GSSAPI_H
 
-/* Define to 1 if you have the <history.h> header file. */
-#undef HAVE_HISTORY_H
-
-/* Define to 1 if you have the `history_truncate_file' function. */
-#undef HAVE_HISTORY_TRUNCATE_FILE
-
 /* Define to 1 if you have the `HMAC_CTX_free' function. */
 #undef HAVE_HMAC_CTX_FREE
 
@@ -165,9 +156,6 @@
 
 /* Define to 1 if the system has the type `int8'. */
 #undef HAVE_INT8
-
-/* Define to 1 if you have the <inttypes.h> header file. */
-#undef HAVE_INTTYPES_H
 
 /* Define to 1 if you have the global variable 'int opterr'. */
 #undef HAVE_INT_OPTERR
@@ -208,9 +196,6 @@
 /* Define to 1 if you have the <mbarrier.h> header file. */
 #undef HAVE_MBARRIER_H
 
-/* Define to 1 if you have the <memory.h> header file. */
-#undef HAVE_MEMORY_H
-
 /* Define to 1 if you have the `memset_s' function. */
 #undef HAVE_MEMSET_S
 
@@ -226,30 +211,6 @@
 /* Define to 1 if you have the `pthread_barrier_wait' function. */
 #undef HAVE_PTHREAD_BARRIER_WAIT
 
-/* Have PTHREAD_PRIO_INHERIT. */
-#undef HAVE_PTHREAD_PRIO_INHERIT
-
-/* Define to 1 if you have the `rl_completion_matches' function. */
-#undef HAVE_RL_COMPLETION_MATCHES
-
-/* Define to 1 if you have the global variable 'rl_completion_suppress_quote'.
-   */
-#undef HAVE_RL_COMPLETION_SUPPRESS_QUOTE
-
-/* Define to 1 if you have the `rl_filename_completion_function' function. */
-#undef HAVE_RL_FILENAME_COMPLETION_FUNCTION
-
-/* Define to 1 if you have the global variable 'rl_filename_quote_characters'.
-   */
-#undef HAVE_RL_FILENAME_QUOTE_CHARACTERS
-
-/* Define to 1 if you have the global variable 'rl_filename_quoting_function'.
-   */
-#undef HAVE_RL_FILENAME_QUOTING_FUNCTION
-
-/* Define to 1 if you have the `rl_reset_screen_size' function. */
-#undef HAVE_RL_RESET_SCREEN_SIZE
-
 /* Define to 1 if you have the `rl_variable_bind' function. */
 #undef HAVE_RL_VARIABLE_BIND
 
@@ -261,9 +222,6 @@
 
 /* Define to 1 if you have the `SSL_CTX_set_cert_cb' function. */
 #undef HAVE_SSL_CTX_SET_CERT_CB
-
-/* Define to 1 if you have the `SSL_CTX_set_num_tickets' function. */
-#undef HAVE_SSL_CTX_SET_NUM_TICKETS
 
 /* Define to 1 if stdbool.h conforms to C99. */
 #undef HAVE_STDBOOL_H
@@ -367,9 +325,6 @@
 /* Define to 1 if your compiler understands __builtin_ctz. */
 #undef HAVE__BUILTIN_CTZ
 
-/* Define to 1 if your compiler understands __builtin_$op_overflow. */
-#undef HAVE__BUILTIN_OP_OVERFLOW
-
 /* Define to 1 if your compiler understands __builtin_popcount. */
 #undef HAVE__BUILTIN_POPCOUNT
 
@@ -462,14 +417,6 @@
 /* A string containing the version number, platform, and C compiler */
 #undef PG_VERSION_STR
 
-/* Define to 1 to allow profiling output to be saved separately for each
-   process. */
-#undef PROFILE_PID_DIR
-
-/* Define to necessary symbol if this constant uses a non-standard name on
-   your system. */
-#undef PTHREAD_CREATE_JOINABLE
-
 /* The size of `bool', as computed by sizeof. */
 #undef SIZEOF_BOOL
 
@@ -484,9 +431,6 @@
 
 /* The size of `void *', as computed by sizeof. */
 #undef SIZEOF_VOID_P
-
-/* Define to 1 if you have the ANSI C header files. */
-#undef STDC_HEADERS
 
 /* Define to 1 if strerror_r() returns int. */
 #undef STRERROR_R_INT
@@ -535,15 +479,6 @@
 #  undef WORDS_BIGENDIAN
 # endif
 #endif
-
-/* Number of bits in a file offset, on hosts where this is settable. */
-#undef _FILE_OFFSET_BITS
-
-/* Define to 1 to make fseeko visible on some hosts (e.g. glibc 2.2). */
-#undef _LARGEFILE_SOURCE
-
-/* Define for large files, on AIX-style hosts. */
-#undef _LARGE_FILES
 
 /* Define to `__inline__' or `__inline' if that's what the C compiler
    calls it, or to nothing if 'inline' is not supported under any name.  */

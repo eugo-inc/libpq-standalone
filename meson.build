@@ -134,8 +134,8 @@ pg_version_num = (pg_version_major * 10000) + pg_version_minor
 
 pg_url = 'https://www.postgresql.org/'
 
-cdata.set_quoted('PACKAGE_NAME', 'PostgreSQL')
-cdata.set_quoted('PACKAGE_BUGREPORT', 'pgsql-bugs@lists.postgresql.org')
+cdata.set_quoted('PACKAGE_NAME', 'libpq-standalone')
+cdata.set_quoted('PACKAGE_BUGREPORT', 'slava@eugo.io')
 cdata.set_quoted('PACKAGE_URL', pg_url)
 cdata.set_quoted('PACKAGE_VERSION', pg_version)
 cdata.set_quoted('PACKAGE_STRING', 'PostgreSQL @0@'.format(pg_version))
@@ -742,7 +742,6 @@ if sslopt in ['auto', 'openssl']
 
       # Function introduced in OpenSSL 1.1.1
       ['X509_get_signature_info'],
-      ['SSL_CTX_set_num_tickets'],
     ]
 
     are_openssl_funcs_complete = true
@@ -1053,29 +1052,6 @@ if cc.compiles('''
   cdata.set('HAVE__BUILTIN_TYPES_COMPATIBLE_P', 1)
 endif
 
-
-# Check if the C compiler understands __builtin_$op_overflow(),
-# and define HAVE__BUILTIN_OP_OVERFLOW if so.
-#
-# Check for the most complicated case, 64 bit multiplication, as a
-# proxy for all of the operations.  To detect the case where the compiler
-# knows the function but library support is missing, we must link not just
-# compile, and store the results in global variables so the compiler doesn't
-# optimize away the call.
-if cc.links('''
-    INT64 a = 1;
-    INT64 b = 1;
-    INT64 result;
-
-    int main(void)
-    {
-        return __builtin_mul_overflow(a, b, &result);
-    }''',
-    name: '__builtin_mul_overflow',
-    args: test_c_args + ['-DINT64=@0@'.format(cdata.get('PG_INT64_TYPE'))],
-    )
-  cdata.set('HAVE__BUILTIN_OP_OVERFLOW', 1)
-endif
 
 
 # XXX: The configure.ac check for __cpuid() is broken, we don't copy that
