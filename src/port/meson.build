@@ -58,7 +58,6 @@ replace_funcs_neg = [
   ['getopt_long'],
   ['getpeereid'],
   ['inet_aton'],
-  ['mkdtemp'],
   ['strlcat'],
   ['strlcpy'],
   ['strnlen'],

@@ -1622,7 +1622,6 @@ func_checks = [
   ['inet_aton'],
   ['inet_pton'],
   ['memset_s'],
-  ['mkdtemp'],
   ['pthread_barrier_wait', {'dependencies': [thread_dep]}],
   ['sem_init', {'dependencies': [rt_dep, thread_dep], 'skip': sema_kind != 'unnamed_posix', 'define': false}],
   ['socket', {'dependencies': [socket_dep], 'define': false}],
@@ -1670,13 +1669,6 @@ foreach c : func_checks
               description: 'Define to 1 if you have the `@0@\' function.'.format(func))
   endif
 endforeach
-
-
-if cc.has_function('syslog', args: test_c_args) and \
-    cc.check_header('syslog.h', args: test_c_args)
-  cdata.set('HAVE_SYSLOG', 1)
-endif
-
 
 # if prerequisites for unnamed posix semas aren't fulfilled, fall back to sysv
 # semaphores
