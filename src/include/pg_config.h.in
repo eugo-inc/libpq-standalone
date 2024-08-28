@@ -258,8 +258,7 @@
 /* Define to 1 if you have the `memset_s' function. */
 #undef HAVE_MEMSET_S
 
-/* Define to 1 if you have the `mkdtemp' function. */
-#undef HAVE_MKDTEMP
+
 
 /* Define to 1 if you have the `OPENSSL_init_ssl' function. */
 #undef HAVE_OPENSSL_INIT_SSL

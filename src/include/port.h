@@ -410,10 +410,6 @@ extern float pg_strtof(const char *nptr, char **endptr);
 extern int	link(const char *src, const char *dst);
 #endif
 
-#ifndef HAVE_MKDTEMP
-extern char *mkdtemp(char *path);
-#endif
-
 #ifndef HAVE_INET_ATON
 #include <netinet/in.h>
 #include <arpa/inet.h>
