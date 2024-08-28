@@ -11,8 +11,6 @@ pgport_sources = [
   'pgstrcasecmp.c',
   'pgstrsignal.c',
   'pqsignal.c',
-  'qsort.c',
-  'qsort_arg.c',
   'quotes.c',
   'snprintf.c',
   'strerror.c',
