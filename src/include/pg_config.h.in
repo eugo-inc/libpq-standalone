@@ -21,8 +21,6 @@
 /* The normal alignment of `short', in bytes. */
 #undef ALIGNOF_SHORT
 
-
-
 /* Saved arguments from configure */
 #undef CONFIGURE_ARGS
 
@@ -34,8 +32,6 @@
 
 /* Define to the default TCP port number as a string constant. */
 #undef DEF_PGPORT_STR
-
-
 
 /* Define to build with GSSAPI support. (--with-gssapi) */
 #undef ENABLE_GSS
@@ -52,16 +48,8 @@
 /* Define to 1 if you have the <atomic.h> header file. */
 #undef HAVE_ATOMIC_H
 
-
-
 /* Define to 1 if you have the `BIO_meth_new' function. */
 #undef HAVE_BIO_METH_NEW
-
-
-
-
-
-
 
 /* Define to 1 if you have the <crtdefs.h> header file. */
 #undef HAVE_CRTDEFS_H
@@ -76,12 +64,6 @@
 /* Define to 1 if you have the declaration of `F_FULLFSYNC', and to 0 if you
    don't. */
 #undef HAVE_DECL_F_FULLFSYNC
-
-
-
-
-
-
 
 /* Define to 1 if you have the declaration of `preadv', and to 0 if you don't.
    */
@@ -106,9 +88,6 @@
 /* Define to 1 if you have the declaration of `strsep', and to 0 if you don't.
    */
 #undef HAVE_DECL_STRSEP
-
-
-
 
 /* Define to 1 if you have the `explicit_bzero' function. */
 #undef HAVE_EXPLICIT_BZERO
@@ -135,8 +114,6 @@
 /* Define to 1 if you have __sync_val_compare_and_swap(int64 *, int64, int64).
    */
 #undef HAVE_GCC__SYNC_INT64_CAS
-
-
 
 /* Define to 1 if you have the `getopt' function. */
 #undef HAVE_GETOPT
@@ -177,8 +154,6 @@
 /* Define to 1 if you have the `HMAC_CTX_new' function. */
 #undef HAVE_HMAC_CTX_NEW
 
-
-
 /* Define to 1 if you have the `inet_aton' function. */
 #undef HAVE_INET_ATON
 
@@ -200,11 +175,8 @@
 /* Define to 1 if you have the global variable 'int optreset'. */
 #undef HAVE_INT_OPTRESET
 
-
-
 /* Define to 1 if __builtin_constant_p(x) implies "i"(x) acceptance. */
 #undef HAVE_I_CONSTRAINT__BUILTIN_CONSTANT_P
-
 
 /* Define to 1 if you have the `ldap_initialize' function. */
 #undef HAVE_LDAP_INITIALIZE
@@ -215,31 +187,17 @@
 /* Define to 1 if you have the `ldap' library (-lldap). */
 #undef HAVE_LIBLDAP
 
-
-
 /* Define to 1 if you have the `m' library (-lm). */
 #undef HAVE_LIBM
 
 /* Define to 1 if you have the `pam' library (-lpam). */
 #undef HAVE_LIBPAM
 
-
-
-
-
 /* Define to 1 if you have the `ssl' library (-lssl). */
 #undef HAVE_LIBSSL
 
 /* Define to 1 if you have the `wldap32' library (-lwldap32). */
 #undef HAVE_LIBWLDAP32
-
-
-
-
-
-
-
-
 
 /* Define to 1 if `long int' works and is 64 bits. */
 #undef HAVE_LONG_INT_64
@@ -250,28 +208,17 @@
 /* Define to 1 if you have the <mbarrier.h> header file. */
 #undef HAVE_MBARRIER_H
 
-
-
 /* Define to 1 if you have the <memory.h> header file. */
 #undef HAVE_MEMORY_H
 
 /* Define to 1 if you have the `memset_s' function. */
 #undef HAVE_MEMSET_S
 
-
-
 /* Define to 1 if you have the `OPENSSL_init_ssl' function. */
 #undef HAVE_OPENSSL_INIT_SSL
 
-
-
 /* Define to 1 if you have the <pam/pam_appl.h> header file. */
 #undef HAVE_PAM_PAM_APPL_H
-
-
-
-
-
 
 /* Define if you have POSIX threads libraries and header files. */
 #undef HAVE_PTHREAD
@@ -279,16 +226,8 @@
 /* Define to 1 if you have the `pthread_barrier_wait' function. */
 #undef HAVE_PTHREAD_BARRIER_WAIT
 
-
-
 /* Have PTHREAD_PRIO_INHERIT. */
 #undef HAVE_PTHREAD_PRIO_INHERIT
-
-
-
-
-
-
 
 /* Define to 1 if you have the `rl_completion_matches' function. */
 #undef HAVE_RL_COMPLETION_MATCHES
@@ -316,8 +255,6 @@
 
 /* Define to 1 if you have the <security/pam_appl.h> header file. */
 #undef HAVE_SECURITY_PAM_APPL_H
-
-
 
 /* Define to 1 if the system has the type `socklen_t'. */
 #undef HAVE_SOCKLEN_T
@@ -367,28 +304,11 @@
 /* Define to 1 if the system has the type `struct option'. */
 #undef HAVE_STRUCT_OPTION
 
-
-
-
-
-
-
-
-
 /* Define to 1 if you have the syslog interface. */
 #undef HAVE_SYSLOG
 
-
-
-
-
 /* Define to 1 if you have the <sys/personality.h> header file. */
 #undef HAVE_SYS_PERSONALITY_H
-
-
-
-
-
 
 /* Define to 1 if you have the <sys/stat.h> header file. */
 #undef HAVE_SYS_STAT_H
@@ -401,8 +321,6 @@
 
 /* Define to 1 if you have the <termios.h> header file. */
 #undef HAVE_TERMIOS_H
-
-
 
 /* Define to 1 if you have the <ucred.h> header file. */
 #undef HAVE_UCRED_H
@@ -419,20 +337,8 @@
 /* Define to 1 if you have the <unistd.h> header file. */
 #undef HAVE_UNISTD_H
 
-
-
-
-
-
-
-
-
-
-
 /* Define to 1 if your compiler knows the visibility("hidden") attribute. */
 #undef HAVE_VISIBILITY_ATTRIBUTE
-
-
 
 /* Define to 1 if you have the `X509_get_signature_info' function. */
 #undef HAVE_X509_GET_SIGNATURE_INFO
@@ -458,12 +364,8 @@
 /* Define to 1 if your compiler understands __builtin_clz. */
 #undef HAVE__BUILTIN_CLZ
 
-
-
 /* Define to 1 if your compiler understands __builtin_ctz. */
 #undef HAVE__BUILTIN_CTZ
-
-
 
 /* Define to 1 if your compiler understands __builtin_$op_overflow. */
 #undef HAVE__BUILTIN_OP_OVERFLOW
@@ -476,8 +378,6 @@
 
 /* Define to 1 if your compiler understands __builtin_unreachable. */
 #undef HAVE__BUILTIN_UNREACHABLE
-
-
 
 /* Define to 1 if you have __cpuid. */
 #undef HAVE__CPUID
@@ -570,8 +470,6 @@
    your system. */
 #undef PTHREAD_CREATE_JOINABLE
 
-
-
 /* The size of `bool', as computed by sizeof. */
 #undef SIZEOF_BOOL
 
@@ -605,29 +503,11 @@
 /* Define to 1 to use AVX-512 popcount instructions with a runtime check. */
 #undef USE_AVX512_POPCNT_WITH_RUNTIME_CHECK
 
-
-
-
-
-
-
-
-
 /* Define to 1 to build with LDAP support. (--with-ldap) */
 #undef USE_LDAP
 
-
-
-
-
-
-
 /* Define to 1 to use LoongArch CRCC instructions. */
 #undef USE_LOONGARCH_CRC32C
-
-
-
-
 
 /* Define to 1 to build with OpenSSL support. (--with-ssl=openssl) */
 #undef USE_OPENSSL
@@ -644,16 +524,6 @@
 /* Define to 1 to use Intel SSE 4.2 CRC instructions with a runtime check. */
 #undef USE_SSE42_CRC32C_WITH_RUNTIME_CHECK
 
-
-
-
-
-
-
-
-
-
-
 /* Define WORDS_BIGENDIAN to 1 if your processor stores words with the most
    significant byte first (like Motorola and SPARC, unlike Intel). */
 #if defined AC_APPLE_UNIVERSAL_BUILD
@@ -665,10 +535,6 @@
 #  undef WORDS_BIGENDIAN
 # endif
 #endif
-
-
-
-
 
 /* Number of bits in a file offset, on hosts where this is settable. */
 #undef _FILE_OFFSET_BITS

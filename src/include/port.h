@@ -485,15 +485,9 @@ extern bool pg_strong_random(void *buf, size_t len);
 /* port/pgcheckdir.c */
 extern int	pg_check_dir(const char *dir);
 
-/* port/pgmkdirp.c */
-extern int	pg_mkdir_p(char *path, int omode);
-
 /* port/pqsignal.c */
 typedef void (*pqsigfunc) (SIGNAL_ARGS);
 extern pqsigfunc pqsignal(int signo, pqsigfunc func);
-
-/* port/quotes.c */
-extern char *escape_single_quotes_ascii(const char *src);
 
 /* common/wait_error.c */
 extern char *wait_result_to_str(int exitstatus);

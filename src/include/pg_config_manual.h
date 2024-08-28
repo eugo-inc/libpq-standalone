@@ -14,12 +14,6 @@
  */
 
 /*
- * This is the default value for wal_segment_size to be used when initdb is run
- * without the --wal-segsize option.  It must be a valid segment size.
- */
-#define DEFAULT_XLOG_SEG_SIZE	(16*1024*1024)
-
-/*
  * Maximum length for identifiers (e.g. table names, column names,
  * function names).  Names actually are limited to one fewer byte than this,
  * because the length must include a trailing zero byte.
@@ -27,51 +21,6 @@
  * Changing this requires an initdb.
  */
 #define NAMEDATALEN 64
-
-/*
- * Maximum number of arguments to a function.
- *
- * The minimum value is 8 (GIN indexes use 8-argument support functions).
- * The maximum possible value is around 600 (limited by index tuple size in
- * pg_proc's index; BLCKSZ larger than 8K would allow more).  Values larger
- * than needed will waste memory and processing time, but do not directly
- * cost disk space.
- *
- * Changing this does not require an initdb, but it does require a full
- * backend recompile (including any user-defined C functions).
- */
-#define FUNC_MAX_ARGS		100
-
-/*
- * When creating a product derived from PostgreSQL with changes that cause
- * incompatibilities for loadable modules, it is recommended to change this
- * string so that dfmgr.c can refuse to load incompatible modules with a clean
- * error message.  Typical examples that cause incompatibilities are any
- * changes to node tags or node structures.  (Note that dfmgr.c already
- * detects common sources of incompatibilities due to major version
- * differences and due to some changed compile-time constants.  This setting
- * is for catching anything that cannot be detected in a straightforward way.)
- *
- * There is no prescribed format for the string.  The suggestion is to include
- * product or company name, and optionally any internally-relevant ABI
- * version.  Example: "ACME Postgres/1.2".  Note that the string will appear
- * in a user-facing error message if an ABI mismatch is detected.
- */
-#define FMGR_ABI_EXTRA		"PostgreSQL"
-
-/*
- * Maximum number of columns in an index.  There is little point in making
- * this anything but a multiple of 32, because the main cost is associated
- * with index tuple header size (see access/itup.h).
- *
- * Changing this requires an initdb.
- */
-#define INDEX_MAX_KEYS		32
-
-/*
- * Maximum number of columns in a partition key
- */
-#define PARTITION_MAX_KEYS	32
 
 /*
  * Decide whether built-in 8-byte types, including float8, int8, and
@@ -126,9 +75,6 @@
 #define EXEC_BACKEND
 #endif
 
-/* upper limit for all three variables */
-#define WRITEBACK_MAX_PENDING_FLUSHES 256
-
 /*
  * USE_SSL code should be compiled only when compiling with an SSL
  * implementation.
@@ -161,11 +107,6 @@
 #endif
 
 /*
- * This is the default event source for Windows event log.
- */
-#define DEFAULT_EVENT_SOURCE  "PostgreSQL"
-
-/*
  * Assumed cache line size.  This doesn't affect correctness, but can be used
  * for low-level optimizations.  This is mostly used to pad various data
  * structures, to ensure that highly-contended fields are on different cache
@@ -175,154 +116,3 @@
  * platforms.
  */
 #define PG_CACHE_LINE_SIZE		128
-
-/*
- * Assumed alignment requirement for direct I/O.  4K corresponds to common
- * sector and memory page size.
- */
-#define PG_IO_ALIGN_SIZE		4096
-
-/*
- *------------------------------------------------------------------------
- * The following symbols are for enabling debugging code, not for
- * controlling user-visible features or resource limits.
- *------------------------------------------------------------------------
- */
-
-/*
- * Force use of the non-recursive JSON parser in all cases. This is useful
- * to validate the working of the parser, and the regression tests should
- * pass except for some different error messages about the stack limit.
- */
-/* #define FORCE_JSON_PSTACK */
-
-/*
- * Include Valgrind "client requests", mostly in the memory allocator, so
- * Valgrind understands PostgreSQL memory contexts.  This permits detecting
- * memory errors that Valgrind would not detect on a vanilla build.  It also
- * enables detection of buffer accesses that take place without holding a
- * buffer pin (or without holding a buffer lock in the case of index access
- * methods that superimpose their own custom client requests on top of the
- * generic bufmgr.c requests).
- *
- * "make installcheck" is significantly slower under Valgrind.  The client
- * requests fall in hot code paths, so USE_VALGRIND slows execution by a few
- * percentage points even when not run under Valgrind.
- *
- * Do not try to test the server under Valgrind without having built the
- * server with USE_VALGRIND; else you will get false positives from sinval
- * messaging (see comments in AddCatcacheInvalidationMessage).  It's also
- * important to use the suppression file src/tools/valgrind.supp to
- * exclude other known false positives.
- *
- * You should normally use MEMORY_CONTEXT_CHECKING with USE_VALGRIND;
- * instrumentation of repalloc() is inferior without it.
- */
-/* #define USE_VALGRIND */
-
-/*
- * Define this to cause pfree()'d memory to be cleared immediately, to
- * facilitate catching bugs that refer to already-freed values.
- * Right now, this gets defined automatically if --enable-cassert.
- */
-#ifdef USE_ASSERT_CHECKING
-#define CLOBBER_FREED_MEMORY
-#endif
-
-/*
- * Define this to check memory allocation errors (scribbling on more
- * bytes than were allocated).  Right now, this gets defined
- * automatically if --enable-cassert or USE_VALGRIND.
- */
-#if defined(USE_ASSERT_CHECKING) || defined(USE_VALGRIND)
-#define MEMORY_CONTEXT_CHECKING
-#endif
-
-/*
- * Define this to cause palloc()'d memory to be filled with random data, to
- * facilitate catching code that depends on the contents of uninitialized
- * memory.  Caution: this is horrendously expensive.
- */
-/* #define RANDOMIZE_ALLOCATED_MEMORY */
-
-/*
- * For cache-invalidation debugging, define DISCARD_CACHES_ENABLED to enable
- * use of the debug_discard_caches GUC to aggressively flush syscache/relcache
- * entries whenever it's possible to deliver invalidations.  See
- * AcceptInvalidationMessages() in src/backend/utils/cache/inval.c for
- * details.
- *
- * USE_ASSERT_CHECKING builds default to enabling this.  It's possible to use
- * DISCARD_CACHES_ENABLED without a cassert build and the implied
- * CLOBBER_FREED_MEMORY and MEMORY_CONTEXT_CHECKING options, but it's unlikely
- * to be as effective at identifying problems.
- */
-/* #define DISCARD_CACHES_ENABLED */
-
-#if defined(USE_ASSERT_CHECKING) && !defined(DISCARD_CACHES_ENABLED)
-#define DISCARD_CACHES_ENABLED
-#endif
-
-/*
- * Backwards compatibility for the older compile-time-only clobber-cache
- * macros.
- */
-#if !defined(DISCARD_CACHES_ENABLED) && (defined(CLOBBER_CACHE_ALWAYS) || defined(CLOBBER_CACHE_RECURSIVELY))
-#define DISCARD_CACHES_ENABLED
-#endif
-
-/*
- * Recover memory used for relcache entries when invalidated.  See
- * RelationBuildDesc() in src/backend/utils/cache/relcache.c.
- *
- * This is active automatically for clobber-cache builds when clobbering is
- * active, but can be overridden here by explicitly defining
- * RECOVER_RELATION_BUILD_MEMORY.  Define to 1 to always free relation cache
- * memory even when clobber is off, or to 0 to never free relation cache
- * memory even when clobbering is on.
- */
- /* #define RECOVER_RELATION_BUILD_MEMORY 0 */	/* Force disable */
- /* #define RECOVER_RELATION_BUILD_MEMORY 1 */	/* Force enable */
-
-/*
- * Define DEBUG_NODE_TESTS_ENABLED to enable use of the GUCs
- * debug_copy_parse_plan_trees, debug_write_read_parse_plan_trees, and
- * debug_raw_expression_coverage_test, to test coverage of node support
- * functions in src/backend/nodes/.
- *
- * USE_ASSERT_CHECKING builds default to enabling this.
- */
-/* #define DEBUG_NODE_TESTS_ENABLED */
-
-#if defined(USE_ASSERT_CHECKING) && !defined(DEBUG_NODE_TESTS_ENABLED)
-#define DEBUG_NODE_TESTS_ENABLED
-#endif
-
-/*
- * Backwards compatibility for the older compile-time-only node-tests macros.
- */
-#if !defined(DEBUG_NODE_TESTS_ENABLED) && (defined(COPY_PARSE_PLAN_TREES) || defined(WRITE_READ_PARSE_PLAN_TREES) || defined(RAW_EXPRESSION_COVERAGE_TEST))
-#define DEBUG_NODE_TESTS_ENABLED
-#endif
-
-/*
- * Define this to force Bitmapset reallocation on each modification.  Helps
- * to find dangling pointers to Bitmapset's.
- */
-/* #define REALLOCATE_BITMAPSETS */
-
-/*
- * Enable debugging print statements for lock-related operations.
- */
-/* #define LOCK_DEBUG */
-
-/*
- * Enable debugging print statements for WAL-related operations; see
- * also the wal_debug GUC var.
- */
-/* #define WAL_DEBUG */
-
-/*
- * Enable tracing of syncscan operations (see also the trace_syncscan GUC var).
- */
-/* #define TRACE_SYNCSCAN */
