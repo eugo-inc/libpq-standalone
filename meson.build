@@ -48,37 +48,6 @@ auto_features = get_option('auto_features')
 
 
 ###############################################################
-# Safety first
-###############################################################
-
-# It's very easy to get into confusing states when the source directory
-# contains an in-place build. E.g. the wrong pg_config.h will be used. So just
-# refuse to build in that case.
-#
-# There's a more elaborate check later, that checks for conflicts around all
-# generated files. But we can only do that much further down the line, so this
-# quick check seems worth it. Adhering to this advice should clean up the
-# conflict, but won't protect against somebody doing make distclean or just
-# removing pg_config.h
-errmsg_nonclean_base = '''
-****
-Non-clean source code directory detected.
-
-To build with meson the source tree may not have an in-place, ./configure
-style, build configured. You can have both meson and ./configure style builds
-for the same source tree by building out-of-source / VPATH with
-configure. Alternatively use a separate check out for meson based builds.
-
-@0@
-****'''
-if fs.exists(meson.current_source_dir() / 'src' / 'include' / 'pg_config.h')
-  errmsg_cleanup = 'To clean up, run make distclean in the source tree.'
-  error(errmsg_nonclean_base.format(errmsg_cleanup))
-endif
-
-
-
-###############################################################
 # Variables to be determined
 ###############################################################
 
@@ -132,10 +101,10 @@ pg_version_major = pg_version_arr[0].to_int()
 pg_version_minor = pg_version_arr[1].to_int()
 pg_version_num = (pg_version_major * 10000) + pg_version_minor
 
-pg_url = 'https://www.postgresql.org/'
+pg_url = 'hhttps://github.com/eugo-inc/libpq-standalone/'
 
 cdata.set_quoted('PACKAGE_NAME', 'libpq-standalone')
-cdata.set_quoted('PACKAGE_BUGREPORT', 'slava@eugo.io')
+cdata.set_quoted('PACKAGE_BUGREPORT', 'raptors@eugo.io')
 cdata.set_quoted('PACKAGE_URL', pg_url)
 cdata.set_quoted('PACKAGE_VERSION', pg_version)
 cdata.set_quoted('PACKAGE_STRING', 'PostgreSQL @0@'.format(pg_version))
@@ -325,51 +294,6 @@ python = find_program(get_option('PYTHON'), required: true, native: true)
 
 
 ###############################################################
-# Path to meson (for tests etc)
-###############################################################
-
-# NB: this should really be part of meson, see
-# https://github.com/mesonbuild/meson/issues/8511
-meson_binpath_r = run_command(python, 'src/tools/find_meson', check: true)
-
-if meson_binpath_r.stdout() == ''
-  error('huh, could not run find_meson.\nerrcode: @0@\nstdout: @1@\nstderr: @2@'.format(
-    meson_binpath_r.returncode(),
-    meson_binpath_r.stdout(),
-    meson_binpath_r.stderr()))
-endif
-
-meson_binpath_s = meson_binpath_r.stdout().split('\n')
-meson_binpath_len = meson_binpath_s.length()
-
-if meson_binpath_len < 1
-  error('unexpected introspect line @0@'.format(meson_binpath_r.stdout()))
-endif
-
-i = 0
-meson_impl = ''
-meson_binpath = ''
-meson_args = []
-foreach e : meson_binpath_s
-  if i == 0
-    meson_impl = e
-  elif i == 1
-    meson_binpath = e
-  else
-    meson_args += e
-  endif
-  i += 1
-endforeach
-
-if meson_impl not in ['muon', 'meson']
-  error('unknown meson implementation "@0@"'.format(meson_impl))
-endif
-
-meson_bin = find_program(meson_binpath, native: true)
-
-
-
-###############################################################
 # Option Handling
 ###############################################################
 
@@ -414,8 +338,6 @@ if not (dir_prefix_contains_pg or dir_lib_pkg.contains('pgsql') or dir_lib_pkg.c
   dir_lib_pkg = dir_lib_pkg / pkg
 endif
 
-dir_pgxs = dir_lib_pkg / 'pgxs'
-
 dir_include = get_option('includedir')
 
 dir_include_pkg = dir_include
@@ -425,20 +347,10 @@ if not (dir_prefix_contains_pg or dir_include_pkg.contains('pgsql') or dir_inclu
   dir_include_pkg_rel = pkg
 endif
 
-dir_man = get_option('mandir')
-
-# FIXME: These used to be separately configurable - worth adding?
-dir_doc = get_option('datadir') / 'doc'
-if not (dir_prefix_contains_pg or dir_doc.contains('pgsql') or dir_doc.contains('postgres'))
-  dir_doc = dir_doc / pkg
-endif
-dir_doc_html = dir_doc / 'html'
-
 dir_locale = get_option('localedir')
 
 
 # Derived values
-dir_bitcode = dir_lib_pkg / 'bitcode'
 dir_include_internal = dir_include_pkg / 'internal'
 
 
@@ -633,44 +545,6 @@ endif
 
 
 ###############################################################
-# Library: pam
-###############################################################
-
-pamopt = get_option('pam')
-if not pamopt.disabled()
-  pam = dependency('pam', required: false)
-
-  if not pam.found()
-    pam = cc.find_library('pam', required: pamopt, dirs: test_lib_d)
-  endif
-
-  if pam.found()
-    pam_header_found = false
-
-    # header file <security/pam_appl.h> or <pam/pam_appl.h> is required for PAM.
-    if cc.check_header('security/pam_appl.h', dependencies: pam, required: false,
-        args: test_c_args, include_directories: postgres_inc)
-      cdata.set('HAVE_SECURITY_PAM_APPL_H', 1)
-      pam_header_found = true
-    elif cc.check_header('pam/pam_appl.h', dependencies: pam, required: pamopt,
-        args: test_c_args, include_directories: postgres_inc)
-      cdata.set('HAVE_PAM_PAM_APPL_H', 1)
-      pam_header_found = true
-    endif
-
-    if pam_header_found
-      cdata.set('USE_PAM', 1)
-    else
-      pam = not_found_dep
-    endif
-  endif
-else
-  pam = not_found_dep
-endif
-
-
-
-###############################################################
 # Library: SSL
 ###############################################################
 
@@ -718,7 +592,6 @@ if sslopt in ['auto', 'openssl']
 
   if ssl.found()
     check_funcs = [
-      ['CRYPTO_new_ex_data', {'required': true}],
       ['SSL_new', {'required': true}],
 
       # Function introduced in OpenSSL 1.0.2, not in LibreSSL.
@@ -2139,15 +2012,6 @@ all_built = [
   nls_mo_targets,
 ]
 
-# Meson's default install target is quite verbose. Provide one that is quiet.
-install_quiet = custom_target('install-quiet',
-  output: 'install-quiet',
-  build_always_stale: true,
-  build_by_default: false,
-  command: [meson_bin, meson_args, 'install', '--quiet', '--no-rebuild'],
-  depends: all_built,
-)
-
 
 
 ###############################################################
@@ -2199,7 +2063,6 @@ if meson.version().version_compare('>=0.57')
       'ldap': ldap,
       'nls': libintl,
       'openssl': ssl,
-      'pam': pam,
     },
     section: 'External libraries',
   )

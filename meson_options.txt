@@ -51,9 +51,6 @@ option('ldap', type: 'feature', value: 'auto',
 option('nls', type: 'feature', value: 'auto',
   description: 'Native language support')
 
-option('pam', type: 'feature', value: 'auto',
-  description: 'PAM support')
-
 option('ssl', type: 'combo', choices: ['auto', 'none', 'openssl'],
   value: 'auto',
   description: 'Use LIB for SSL/TLS support (openssl)')
