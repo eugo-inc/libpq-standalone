@@ -1,14 +1,12 @@
 # Copyright (c) 2022-2024, PostgreSQL Global Development Group
 
 pgport_sources = [
-  'bsearch_arg.c',
   'chklocale.c',
   'inet_net_ntop.c',
   'noblock.c',
   'path.c',
   'pg_bitutils.c',
   'pg_strong_random.c',
-  'pgcheckdir.c',
   'pgmkdirp.c',
   'pgsleep.c',
   'pgstrcasecmp.c',
@@ -52,7 +50,6 @@ endif
 
 if cc.get_id() == 'msvc'
   pgport_sources += files(
-    'dirent.c',
     'win32gettimeofday.c',
   )
 endif
