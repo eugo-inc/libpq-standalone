@@ -20,7 +20,6 @@ common_sources = files(
   'unicode_case.c',
   'unicode_category.c',
   'unicode_norm.c',
-  'username.c',
   'wait_error.c',
   'wchar.c',
 )
@@ -83,8 +82,6 @@ common_sources_cflags = {
 
 common_sources_frontend_shlib = common_sources
 common_sources_frontend_shlib += files(
-  'restricted_token.c',
-  'sprompt.c',
 )
 
 common_sources_frontend_static = common_sources_frontend_shlib
