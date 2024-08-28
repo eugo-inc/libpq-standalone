@@ -19,7 +19,6 @@ pgport_sources = [
   'quotes.c',
   'snprintf.c',
   'strerror.c',
-  'tar.c',
   'user.c',
 ]
 
