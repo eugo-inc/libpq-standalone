@@ -597,23 +597,7 @@ if sslopt in ['auto', 'openssl']
       # Function introduced in OpenSSL 1.0.2, not in LibreSSL.
       ['SSL_CTX_set_cert_cb'],
 
-      # Functions introduced in OpenSSL 1.1.0. We used to check for
-      # OPENSSL_VERSION_NUMBER, but that didn't work with 1.1.0, because LibreSSL
-      # defines OPENSSL_VERSION_NUMBER to claim version 2.0.0, even though it
-      # doesn't have these OpenSSL 1.1.0 functions. So check for individual
-      # functions.
-      ['OPENSSL_init_ssl'],
-      ['BIO_meth_new'],
-      ['ASN1_STRING_get0_data'],
-      ['HMAC_CTX_new'],
-      ['HMAC_CTX_free'],
-
-      # OpenSSL versions before 1.1.0 required setting callback functions, for
-      # thread-safety. In 1.1.0, it's no longer required, and CRYPTO_lock()
-      # function was removed.
-      ['CRYPTO_lock'],
-
-      # Function introduced in OpenSSL 1.1.1
+      # Function introduced in OpenSSL 1.1.1, not in LibreSSL.
       ['X509_get_signature_info'],
     ]
 
@@ -636,7 +620,7 @@ if sslopt in ['auto', 'openssl']
     if are_openssl_funcs_complete
       cdata.set('USE_OPENSSL', 1,
                 description: 'Define to 1 to build with OpenSSL support. (-Dssl=openssl)')
-      cdata.set('OPENSSL_API_COMPAT', '0x10002000L',
+      cdata.set('OPENSSL_API_COMPAT', '0x10101000L',
                 description: 'Define to the OpenSSL API version in use. This avoids deprecation warnings from newer OpenSSL versions.')
       ssl_library = 'openssl'
     else
@@ -1447,6 +1431,7 @@ header_checks = [
   'sys/ucred.h',
   'termios.h',
   'ucred.h',
+  'xlocale.h',
 ]
 
 foreach header : header_checks
@@ -1549,14 +1534,6 @@ else
   cdata.set('STRERROR_R_INT', false)
 endif
 
-# Find the right header file for the locale_t type.  macOS needs xlocale.h;
-# standard is locale.h, but glibc <= 2.25 also had an xlocale.h file that
-# we should not use so we check the standard header first.  MSVC has a
-# replacement defined in src/include/port/win32_port.h.
-if not cc.has_type('locale_t', prefix: '#include <locale.h>') and \
-   cc.has_type('locale_t', prefix: '#include <xlocale.h>')
-  cdata.set('LOCALE_T_IN_XLOCALE', 1)
-endif
 
 
 # MSVC doesn't cope well with defining restrict to __restrict, the spelling it

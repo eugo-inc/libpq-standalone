@@ -13,7 +13,6 @@ pgport_sources = [
   'pqsignal.c',
   'snprintf.c',
   'strerror.c',
-  'user.c',
 ]
 
 if host_system == 'windows'

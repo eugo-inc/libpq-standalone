@@ -39,20 +39,11 @@
 /* Define to 1 if you want National Language Support. (--enable-nls) */
 #undef ENABLE_NLS
 
-/* Define to 1 if you have the `ASN1_STRING_get0_data' function. */
-#undef HAVE_ASN1_STRING_GET0_DATA
-
 /* Define to 1 if you have the <atomic.h> header file. */
 #undef HAVE_ATOMIC_H
 
-/* Define to 1 if you have the `BIO_meth_new' function. */
-#undef HAVE_BIO_METH_NEW
-
 /* Define to 1 if you have the <crtdefs.h> header file. */
 #undef HAVE_CRTDEFS_H
-
-/* Define to 1 if you have the `CRYPTO_lock' function. */
-#undef HAVE_CRYPTO_LOCK
 
 /* Define to 1 if you have the declaration of `fdatasync', and to 0 if you
    don't. */
@@ -139,23 +130,11 @@
 /* Define to 1 if you have the <gssapi.h> header file. */
 #undef HAVE_GSSAPI_H
 
-/* Define to 1 if you have the `HMAC_CTX_free' function. */
-#undef HAVE_HMAC_CTX_FREE
-
-/* Define to 1 if you have the `HMAC_CTX_new' function. */
-#undef HAVE_HMAC_CTX_NEW
-
 /* Define to 1 if you have the `inet_aton' function. */
 #undef HAVE_INET_ATON
 
 /* Define to 1 if you have the `inet_pton' function. */
 #undef HAVE_INET_PTON
-
-/* Define to 1 if the system has the type `int64'. */
-#undef HAVE_INT64
-
-/* Define to 1 if the system has the type `int8'. */
-#undef HAVE_INT8
 
 /* Define to 1 if you have the global variable 'int opterr'. */
 #undef HAVE_INT_OPTERR
@@ -198,9 +177,6 @@
 
 /* Define to 1 if you have the `memset_s' function. */
 #undef HAVE_MEMSET_S
-
-/* Define to 1 if you have the `OPENSSL_init_ssl' function. */
-#undef HAVE_OPENSSL_INIT_SSL
 
 /* Define to 1 if you have the <pam/pam_appl.h> header file. */
 #undef HAVE_PAM_PAM_APPL_H
@@ -280,12 +256,6 @@
 /* Define to 1 if you have the <ucred.h> header file. */
 #undef HAVE_UCRED_H
 
-/* Define to 1 if the system has the type `uint64'. */
-#undef HAVE_UINT64
-
-/* Define to 1 if the system has the type `uint8'. */
-#undef HAVE_UINT8
-
 /* Define to 1 if the system has the type `union semun'. */
 #undef HAVE_UNION_SEMUN
 
@@ -300,6 +270,9 @@
 
 /* Define to 1 if the assembler supports X86_64's POPCNTQ instruction. */
 #undef HAVE_X86_64_POPCNTQ
+
+/* Define to 1 if you have the <xlocale.h> header file. */
+#undef HAVE_XLOCALE_H
 
 /* Define to 1 if you have XSAVE intrinsics. */
 #undef HAVE_XSAVE_INTRINSICS
@@ -348,9 +321,6 @@
 
 /* Define to the appropriate printf length modifier for 64-bit ints. */
 #undef INT64_MODIFIER
-
-/* Define to 1 if `locale_t' requires <xlocale.h>. */
-#undef LOCALE_T_IN_XLOCALE
 
 /* Define as the maximum alignment requirement of any C data type. */
 #undef MAXIMUM_ALIGNOF
