@@ -205,3 +205,10 @@ PQcancelFinish            202
 PQsocketPoll              203
 PQsetChunkedRowsMode      204
 PQgetCurrentTimeUSec      205
+# @EUGO_CHANGE(begin): PQfullProtocolVersion is declared in libpq-fe.h (+LIBPQ_HAS_FULL_PROTOCOL_VERSION)
+# and implemented in fe-connect.c, but this pre-OAuth snapshot's export list stopped at 205 — so the .so
+# never exported it and every consumer linking it (psycopg_c >= 3.2.2) failed with an undefined symbol.
+# Upstream exports it at ordinal 209 behind the PG18 auth-data-hook trio (206-208) this snapshot does not
+# carry; 206 is this fork's next free ordinal (ordinals only matter on Windows DLLs).
+PQfullProtocolVersion     206
+# @EUGO_CHANGE(end)
